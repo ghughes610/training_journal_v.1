@@ -19,6 +19,7 @@ defmodule TrainingJournalWeb.Router do
 
     get "/", PageController, :index
     live "/workouts", WorkoutLive
+    live "/form", FormLive
   end
 
   # Other scopes may use custom stacks.

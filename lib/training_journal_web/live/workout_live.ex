@@ -13,7 +13,7 @@ defmodule TrainingJournalWeb.WorkoutLive do
 
   def render(assigns) do
     ~L"""
-    <div>
+    <div class="ml-20 flex-col content-center">
       <%= for workout <- @workouts do %>
         <div class="m-5 max-w-sm rounded overflow-hidden shadow-lg">
             <div class="px-6 py-4">
