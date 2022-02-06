@@ -18,6 +18,7 @@ defmodule TrainingJournalWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    live "/workouts", WorkoutLive
   end
 
   # Other scopes may use custom stacks.
