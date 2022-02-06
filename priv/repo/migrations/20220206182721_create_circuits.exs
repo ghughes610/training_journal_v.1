@@ -1,18 +1,18 @@
-defmodule TrainingJournal.Repo.Migrations.CreateExercises do
+defmodule TrainingJournal.Repo.Migrations.CreateCircuits do
   use Ecto.Migration
 
   def change do
-    create table(:exercises) do
+    create table(:circuits) do
       add :name, :string
-      add :reps, :string
-      add :sets, :string
-      add :weight, :string
+      add :focus, :string
       add :completed, :boolean, default: false, null: false
       add :rest_time, :string, default: "90 seconds", null: "90 seconds"
-      add :circuit_id, references(:circuits, on_delete: :nothing), null: false
       add :metadata, :map, null: false, default: %{}
+      add :workout_id, references(:workouts, on_delete: :nothing)
 
       timestamps()
     end
+
+    create index(:circuits, [:workout_id])
   end
 end
