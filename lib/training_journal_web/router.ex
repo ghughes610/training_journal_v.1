@@ -17,7 +17,7 @@ defmodule TrainingJournalWeb.Router do
   scope "/", TrainingJournalWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
+    live "/", IndexLive
     live "/workouts", WorkoutLive
     live "/form", FormLive
   end
