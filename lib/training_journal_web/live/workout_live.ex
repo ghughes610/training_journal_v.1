@@ -9,7 +9,7 @@ defmodule TrainingJournalWeb.WorkoutLive do
     socket =
       assign(socket,
         workouts: workouts,
-        editing: %{id: 0, name: ""}
+        editing: %{id: 0, name: "", type: ""}
       )
 
     {:ok, socket}
@@ -33,23 +33,25 @@ defmodule TrainingJournalWeb.WorkoutLive do
     ~L"""
     <div >
       <div class="flex-col">
-      <div class="w-100">
-        <form phx-submit="create_workout" >
-        <input type="text" placeholder="name" name="name" class="m-10 p-1"/>
-        <button class="bg-indigo-600 text-white text-sm leading-6 font-medium py-2 px-3 rounded-lg bg-green-600" type="submit">create workout</button>
-        </form>
-      </div>
+        <div class="w-100">
+          <form phx-submit="create_workout" >
+          <input type="text" placeholder="name" name="name" class="m-10 p-1"/>
+          <input type="text" placeholder="type" name="type" class="m-10 p-1"/>
+          <button class="bg-indigo-600 text-white text-sm leading-6 font-medium py-2 px-3 rounded-lg bg-green-600" type="submit">create workout</button>
+          </form>
+        </div>
       <div class="">
           <%= for workout <- @workouts do %>
             <div class="m-8 max-w-sm rounded overflow-hidden shadow-lg bg-blue-500">
                 <div class="px-6 py-4">
-                    <div class= "font-bold text-xl mb-2">
+                    <div class= "flex justify-between items-center font-bold text-xl mb-2">
                       <%= live_patch link_body(workout),
                         to: Routes.live_path(
                         @socket,
                         __MODULE__,
                         id: workout.id
                       ) %>
+                      <button phx-click="delete_workout" phx-value-id="<%= workout.id %>" class="m-3 p-3 max-w-sm rounded overflow-hidden shadow-lg bg-red-500">X</button>
                     </div>
                   </div>
                 </div>
@@ -62,15 +64,28 @@ defmodule TrainingJournalWeb.WorkoutLive do
     """
   end
 
-  def handle_event("create_workout", %{"name" => name}, socket) do
+  def handle_event("delete_workout", %{"id" => id}, socket) do
+    workouts = get_workouts(socket)
+    workout = get_workout_by_id(workouts, id)
+
+    with {:ok, deleted_workout} <- Workouts.delete_workout(workout) do
+      workouts = Enum.filter(workouts, fn workout -> workout.id != deleted_workout.id end)
+
+      {:noreply, assign(socket, :workouts, workouts)}
+    end
+
+
+  end
+
+  def handle_event("create_workout", %{"name" => name, "type" => type}, socket) do
     with {:ok, new_workout} <-
            Workouts.create_workout(%{
              name: name,
              completed: false,
-             finger_training: false,
+             finger_training: true,
              cross_training: false,
              date: Timex.now(),
-             type: "testing"
+             type: type
            }) do
       workouts = get_workouts(socket)
       workouts = [new_workout | workouts]
