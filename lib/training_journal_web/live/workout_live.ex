@@ -15,46 +15,48 @@ defmodule TrainingJournalWeb.WorkoutLive do
     {:ok, socket}
   end
 
-  # def handle_params(%{"id" => id}, _url, socket) do
-  #   id = String.to_integer(id)
+  def handle_params(%{"id" => id}, _url, socket) do
+    id = String.to_integer(id)
 
-  #   workout = Workouts.get_workout!(id)
+    workout = Workouts.get_workout!(id)
 
-  #   socket = assign(socket, selected_workout: workout)
+    socket = assign(socket, selected_workout: workout)
 
-  #   {:noreply, socket}
-  # end
+    {:noreply, socket}
+  end
 
-  # def handle_params(_, _, socket) do
-  #   {:noreply, socket}
-  # end
+  def handle_params(_, _, socket) do
+    {:noreply, socket}
+  end
 
   def render(assigns) do
     ~L"""
-    <div class="flex justify-between">
-      <div class="ml-20 flex-col justify-between content-center">
-        <%= for workout <- @workouts do %>
-          <div class="m-5 max-w-sm rounded overflow-hidden shadow-lg bg-blue-500">
-              <div class="px-6 py-4">
-                  <div class= "font-bold text-xl mb-2">
-                    <%= live_patch link_body(workout),
-                      to: Routes.live_path(
-                      @socket,
-                      __MODULE__,
-                      id: workout.id
-                    ) %>
-                  </div>
-                </div>
-              </div>
-          </div>
-        <% end %>
-      </div>
-      <div >
-      <div>
-        <form phx-submit="create_workout">
-        <input type="text" placeholder="name" name="name" />
+    <div >
+      <div class="flex-col">
+      <div class="w-100">
+        <form phx-submit="create_workout" >
+        <input type="text" placeholder="name" name="name" class="m-10 p-1"/>
         <button class="bg-indigo-600 text-white text-sm leading-6 font-medium py-2 px-3 rounded-lg bg-green-600" type="submit">create workout</button>
         </form>
+      </div>
+      <div class="">
+          <%= for workout <- @workouts do %>
+            <div class="m-8 max-w-sm rounded overflow-hidden shadow-lg bg-blue-500">
+                <div class="px-6 py-4">
+                    <div class= "font-bold text-xl mb-2">
+                      <%= live_patch link_body(workout),
+                        to: Routes.live_path(
+                        @socket,
+                        __MODULE__,
+                        id: workout.id
+                      ) %>
+                    </div>
+                  </div>
+                </div>
+            </div>
+          <% end %>
+        </div>
+        <div >
       </div>
     </div>
     """
