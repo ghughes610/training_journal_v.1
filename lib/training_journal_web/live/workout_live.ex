@@ -2,17 +2,32 @@ defmodule TrainingJournalWeb.WorkoutLive do
   use TrainingJournalWeb, :live_view
 
   alias TrainingJournal.Workouts
-  alias TrainingJournal.Circuits
 
   def mount(_params, _session, socket) do
+    workouts = Workouts.list_workouts()
+
     socket =
       assign(socket,
-        workouts: Workouts.list_workouts(),
-        circuits: Circuits.list_circuits()
+        workouts: workouts,
+        editing: %{id: 0, name: ""}
       )
 
     {:ok, socket}
   end
+
+  # def handle_params(%{"id" => id}, _url, socket) do
+  #   id = String.to_integer(id)
+
+  #   workout = Workouts.get_workout!(id)
+
+  #   socket = assign(socket, selected_workout: workout)
+
+  #   {:noreply, socket}
+  # end
+
+  # def handle_params(_, _, socket) do
+  #   {:noreply, socket}
+  # end
 
   def render(assigns) do
     ~L"""
@@ -21,36 +36,101 @@ defmodule TrainingJournalWeb.WorkoutLive do
         <%= for workout <- @workouts do %>
           <div class="m-5 max-w-sm rounded overflow-hidden shadow-lg bg-blue-500">
               <div class="px-6 py-4">
-                <div class="font-bold text-xl mb-2"><%= workout.name%></div>
-                  <p class="text-gray-700 text-base">
-                    Type: <%= workout.type%> exercise
-                  </p>
+                  <div class= "font-bold text-xl mb-2">
+                    <%= live_patch link_body(workout),
+                      to: Routes.live_path(
+                      @socket,
+                      __MODULE__,
+                      id: workout.id
+                    ) %>
+                  </div>
                 </div>
-                <div class="px-6 pt-4 pb-2">
-                  <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"><%= workout.date |> Timex.format!("{YYYY}-{0M}-{0D}") %></span>
-                  <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"><%= if workout.cross_training , do: "#Cross", else: "#Finger" %></span>
-                  <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"><%= workout.date |> Timex.weekday() |> Timex.day_name() %></span>
               </div>
           </div>
         <% end %>
       </div>
+      <div >
+      <div>
+        <form phx-submit="create_workout">
+        <input type="text" placeholder="name" name="name" />
+        <button class="bg-indigo-600 text-white text-sm leading-6 font-medium py-2 px-3 rounded-lg bg-green-600" type="submit">create workout</button>
+        </form>
+      </div>
+    </div>
+    """
+  end
 
-      <div class="ml-20 flex-col justify-between content-center">
-        <%= for circuit <- @circuits do %>
-          <div class="m-5 max-w-sm rounded overflow-hidden shadow-lg bg-red-500">
-            <div class="px-6 py-4">
-              <div class="font-bold text-xl mb-2"><%= circuit.name%></div>
-                <p class="text-gray-700 text-base">
-                  Focus: <%= circuit.focus%> exercise
-                </p>
-                <div class="px-6 pt-4 pb-2">
-                    <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"><%= circuit.inserted_at |> Timex.format!("{YYYY}-{0M}-{0D}") %></span>
-                    <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#<%= circuit.metadata["feeling"] %></span>
-                    <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"><%= circuit.inserted_at |> Timex.weekday() |> Timex.day_name() %></span>
-                </div>
-              </div>
+  def handle_event("create_workout", %{"name" => name}, socket) do
+    with {:ok, new_workout} <-
+           Workouts.create_workout(%{
+             name: name,
+             completed: false,
+             finger_training: false,
+             cross_training: false,
+             date: Timex.now(),
+             type: "testing"
+           }) do
+      workouts = get_workouts(socket)
+      workouts = [new_workout | workouts]
+
+      {:noreply, assign(socket, :workouts, workouts)}
+    end
+  end
+
+  defp get_workout_by_id(workout, id) do
+    Enum.find(workout, fn workout -> workout.id == String.to_integer(id) end)
+  end
+
+  defp update_workout(workouts, new_workout) do
+    Enum.map(workouts, fn workout ->
+      if workout.id == new_workout.id do
+        new_workout
+      else
+        workout
+      end
+    end)
+  end
+
+  defp get_workouts(socket) do
+    socket.assigns.workouts
+  end
+
+  defp link_body(workout) do
+    assigns = %{name: workout.name, date: workout.date}
+
+    ~L"""
+    <%= @name %>
+    """
+  end
+
+  defp card_body(selected_workout) do
+    assigns = %{selected_workout: selected_workout}
+
+    ~L"""
+    <div class="card">
+      <div class="header">
+        <h2><%= @selected_workout.name %></h2>
+        <button
+          phx-click="toggle-status"
+          phx-value-id="<%= @selected_workout.id %>"
+          phx-disable-with="Saving...">
+         Completed: <%= @selected_workout.completed %>
+        </button>
+      </div>
+      <div class="body">
+        <div class="row">
+          <div class="deploys">
+            <span>
+              Fingers: <%= @selected_workout.finger_training %>
+            </span>
           </div>
-        <% end %>
+          <span>
+            Cross Training: <%= @selected_workout.cross_training %>
+          </span>
+        </div>
+        <blockquote>
+          <%= @selected_workout.date %>
+        </blockquote>
       </div>
     </div>
     """
