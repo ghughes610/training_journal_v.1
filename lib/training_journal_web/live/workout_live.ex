@@ -9,7 +9,7 @@ defmodule TrainingJournalWeb.WorkoutLive do
     socket =
       assign(socket,
         workouts: workouts,
-        editing: %{id: 14, name: "", type: "", metadata: %{}}
+        editing: %{id: 14, name: "", type: "", metadata: %{}},
       )
 
     {:ok, socket}
@@ -41,7 +41,7 @@ defmodule TrainingJournalWeb.WorkoutLive do
           <button class="bg-indigo-600 text-white text-sm leading-6 font-medium py-2 px-3 rounded-lg bg-green-600" type="submit">create workout</button>
           </form>
         </div>
-      <div phx-click="expand_card" class="">
+      <div>
           <%= for workout <- @workouts do %>
             <div class=" flex-col m-8 max-w-sm rounded overflow-hidden shadow-lg bg-blue-500">
                 <div class="px-6 py-4">
@@ -53,7 +53,13 @@ defmodule TrainingJournalWeb.WorkoutLive do
                         id: workout.id
                       ) %>
                       <button phx-click="delete_workout" phx-value-id="<%= workout.id %>" class="m-1 p-2 max-w-sm rounded overflow-hidden shadow-lg bg-red-500">X</button>
+                      <button phx-click="expand_workout" phx-value-id="<%= workout.id %>" class="m-1 p-2 max-w-sm rounded overflow-hidden shadow-lg bg-red-500">+</button>
                     </div>
+                    <%= if workout.completed  do %>
+                        <%= exercise_form(workout) %>
+                        <% else %>
+
+                    <% end %>
                   </div>
                 </div>
             </div>
@@ -67,7 +73,7 @@ defmodule TrainingJournalWeb.WorkoutLive do
 
   def handle_event("delete_workout", %{"id" => id}, socket) do
     workouts = get_workouts(socket)
-    workout = get_workout_by_id(workouts, id)
+    workout = Workouts.get_workout!(id)
 
     with {:ok, deleted_workout} <- Workouts.delete_workout(workout) do
       workouts = Enum.filter(workouts, fn workout -> workout.id != deleted_workout.id end)
@@ -76,9 +82,25 @@ defmodule TrainingJournalWeb.WorkoutLive do
     end
   end
 
+  def handle_event("expand_workout", %{"id" => id}, socket) do
+    workout = Workouts.get_workout!(id)
+
+    {:ok, _workout} =
+      Workouts.update_workout(
+        workout,
+        %{completed: !workout.completed}
+      )
+
+      workouts = Workouts.list_workouts()
+
+      socket = assign(socket, workouts: workouts)
+
+      {:noreply, socket}
+
+  end
+
   def handle_event("update_editing", %{"id" => id}, socket) do
-    workouts = get_workouts(socket)
-    editing = get_workout_by_id(workouts, id)
+    editing = Workouts.get_workout!(id)
 
     {:noreply, assign(socket, :editing, editing)}
   end
@@ -108,9 +130,6 @@ defmodule TrainingJournalWeb.WorkoutLive do
     end
   end
 
-  defp get_workout_by_id(workout, id) do
-    Enum.find(workout, fn workout -> workout.id == String.to_integer(id) end)
-  end
 
   defp update_workout(workouts, new_workout) do
     Enum.map(workouts, fn workout ->
@@ -148,6 +167,30 @@ defmodule TrainingJournalWeb.WorkoutLive do
          Completed: <%= @selected_workout.completed %>
         </button>
       </div>
+      <div class="body">
+        <div class="row">
+          <div class="deploys">
+            <span>
+              Fingers: <%= @selected_workout.finger_training %>
+            </span>
+          </div>
+          <span>
+            Cross Training: <%= @selected_workout.cross_training %>
+          </span>
+        </div>
+        <blockquote>
+          <%= @selected_workout.date %>
+        </blockquote>
+      </div>
+    </div>
+    """
+  end
+
+  defp exercise_form(selected_workout) do
+    assigns = %{selected_workout: selected_workout}
+
+    ~L"""
+    <div class="card">
       <div class="body">
         <div class="row">
           <div class="deploys">

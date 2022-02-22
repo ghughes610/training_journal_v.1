@@ -71,7 +71,6 @@ defmodule TrainingJournal.Workouts do
     workout
     |> Workout.changeset(attrs)
     |> Repo.update()
-    |> broadcast(:workout_updated)
   end
 
   @doc """
@@ -102,5 +101,5 @@ defmodule TrainingJournal.Workouts do
   def change_workout(%Workout{} = workout, attrs \\ %{}) do
     Workout.changeset(workout, attrs)
   end
-  defp broadcast({:error, _reason} = error, _event), do: error
+ 
 end
