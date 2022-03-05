@@ -2,13 +2,15 @@ defmodule TrainingJournalWeb.WorkoutLive do
   use TrainingJournalWeb, :live_view
 
   alias TrainingJournal.Workouts
-
+  @impl true
   def mount(_params, _session, socket) do
     workouts = Workouts.list_workouts()
-
+    workout = workouts |> Enum.random()
     socket =
       assign(socket,
+        workout: workout,
         workouts: workouts,
+        unfinished_workouts: Enum.filter(workouts, fn workout -> workout.completed == false end ),
         editing: %{id: 14, name: "", type: "", metadata: %{}},
       )
 
@@ -29,48 +31,6 @@ defmodule TrainingJournalWeb.WorkoutLive do
     {:noreply, socket}
   end
 
-  def render(assigns) do
-    ~L"""
-    <div >
-      <div class="flex-col">
-        <div class="w-100">
-          <form phx-submit="create_workout" >
-          <input type="text" placeholder="name" name="name" class="m-10 p-1"/>
-          <input type="text" placeholder="type" name="type" class="m-10 p-1"/>
-          <input type="text" placeholder="metadata" name="metadata" class="m-10 p-1"/>
-          <button class="bg-indigo-600 text-white text-sm leading-6 font-medium py-2 px-3 rounded-lg bg-green-600" type="submit">create workout</button>
-          </form>
-        </div>
-      <div>
-          <%= for workout <- @workouts do %>
-            <div class=" flex-col m-8 max-w-sm rounded overflow-hidden shadow-lg bg-blue-500">
-                <div class="px-6 py-4">
-                    <div class= "flex justify-between items-center font-bold text-xl mb-2">
-                      <%= live_patch link_body(workout),
-                        to: Routes.live_path(
-                        @socket,
-                        __MODULE__,
-                        id: workout.id
-                      ) %>
-                      <button phx-click="delete_workout" phx-value-id="<%= workout.id %>" class="m-1 p-2 max-w-sm rounded overflow-hidden shadow-lg bg-red-500">X</button>
-                      <button phx-click="expand_workout" phx-value-id="<%= workout.id %>" class="m-1 p-2 max-w-sm rounded overflow-hidden shadow-lg bg-red-500">+</button>
-                    </div>
-                    <%= if workout.completed  do %>
-                        <%= exercise_form(workout) %>
-                        <% else %>
-
-                    <% end %>
-                  </div>
-                </div>
-            </div>
-          <% end %>
-        </div>
-        <div >
-      </div>
-    </div>
-    """
-  end
-
   def handle_event("delete_workout", %{"id" => id}, socket) do
     workouts = get_workouts(socket)
     workout = Workouts.get_workout!(id)
@@ -83,6 +43,24 @@ defmodule TrainingJournalWeb.WorkoutLive do
   end
 
   def handle_event("expand_workout", %{"id" => id}, socket) do
+    workout = Workouts.get_workout!(id)
+
+    {:ok, _workout} =
+      Workouts.update_workout(
+        workout,
+        %{completed: !workout.completed}
+      )
+
+      workouts = Workouts.list_workouts()
+
+      socket = assign(socket, workouts: workouts)
+
+      {:noreply, socket}
+
+  end
+
+
+  def handle_event("_workout", %{"id" => id}, socket) do
     workout = Workouts.get_workout!(id)
 
     {:ok, _workout} =
@@ -204,6 +182,9 @@ defmodule TrainingJournalWeb.WorkoutLive do
         </div>
         <blockquote>
           <%= @selected_workout.date %>
+        </blockquote>
+        <blockquote>
+          <%= @selected_workout.completed %>
         </blockquote>
       </div>
     </div>

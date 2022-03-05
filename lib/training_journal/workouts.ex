@@ -101,5 +101,5 @@ defmodule TrainingJournal.Workouts do
   def change_workout(%Workout{} = workout, attrs \\ %{}) do
     Workout.changeset(workout, attrs)
   end
- 
+
 end

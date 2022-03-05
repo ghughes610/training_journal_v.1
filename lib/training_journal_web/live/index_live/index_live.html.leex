@@ -1,19 +1,4 @@
-defmodule TrainingJournalWeb.IndexLive do
-  use TrainingJournalWeb, :live_view
-
-  alias TrainingJournal.Workouts
-
-  def mount(_params, _session, socket) do
-    workouts = Workouts.list_workouts()
-
-    socket = assign(socket, workouts: workouts)
-    {:ok, socket}
-  end
-
-  def render(assigns) do
-    ~L"""
-    
-    <main class="py-6 px-4 sm:p-6 md:py-10 md:px-8">
+<main class="py-6 px-4 sm:p-6 md:py-10 md:px-8">
       <div class="mt-20 max-w-4xl mx-auto grid grid-cols-1 lg:max-w-5xl lg:gap-x-20 lg:grid-cols-2">
         <div class="grid gap-4 col-start-1 col-end-3 row-start-1 sm:mb-6 sm:grid-cols-4 lg:gap-6 lg:col-start-2 lg:row-end-6 lg:row-span-6 lg:mb-0">
           <img src="https://thumbs.dreamstime.com/b/kettlebell-icon-comic-style-barbell-sport-equipment-cartoon-vector-illustration-white-isolated-background-dumbbell-splash-181354706.jpg" alt="" class="ml-14 h-60 object-cover rounded-lg sm:h-52 sm:col-span-2 lg:col-span-full" loading="lazy">
@@ -32,7 +17,3 @@ defmodule TrainingJournalWeb.IndexLive do
         </p>
       </div>
      </main>
-
-    """
-  end
-end
