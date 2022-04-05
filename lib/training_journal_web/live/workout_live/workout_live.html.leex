@@ -8,7 +8,7 @@
           <input type="text" placeholder="metadata" name="metadata" class="m-10 p-1"/>
           <button class="bg-indigo-600 text-white text-sm leading-6 font-medium py-2 px-3 rounded-lg bg-green-600" type="submit">create workout</button>
           </form>
-        <%= live_component TrainingJournalWeb.CardLive.CardComponent, workout: @workout %>
+
         </div>
       <div>
           <%= for workout <- @workouts do %>
@@ -22,9 +22,7 @@
                         id: workout.id
                       ) %>
                       <button phx-click="delete_workout" phx-value-id="<%= workout.id %>" class="m-1 p-2 max-w-sm rounded overflow-hidden shadow-lg bg-red-500">X</button>
-                      <button phx-click="delete_workout" phx-value-id="<%= workout.id %>" class="m-1 p-2 max-w-sm rounded overflow-hidden shadow-lg bg-red-500">X</button>
                       <button phx-click="expand_workout" phx-value-id="<%= workout.id %>" class="m-1 p-2 max-w-sm rounded overflow-hidden shadow-lg bg-red-500">+</button>
-
                     </div>
                     <%= if workout.completed  do %>
                     <% else %>
