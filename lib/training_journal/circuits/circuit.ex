@@ -16,7 +16,7 @@ defmodule TrainingJournal.Circuits.Circuit do
   @doc false
   def changeset(circuit, attrs) do
     circuit
-    |> cast(attrs, [:name, :focus, :completed, :rest_time, :metadata])
+    |> cast(attrs, [:name, :focus, :completed, :rest_time, :metadata, :workout_id])
     |> validate_required([:name, :focus, :completed, :rest_time, :metadata])
   end
 end
