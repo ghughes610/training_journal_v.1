@@ -1,0 +1,37 @@
+<h1>Listing Exercises</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <.modal return_to={Routes.exercise_index_path(@socket, :index)}>
+    <.live_component
+      module={TrainingJournalWeb.ExerciseLive.FormComponent}
+      id={@exercise.id || :new}
+      title={@page_title}
+      action={@live_action}
+      exercise={@exercise}
+      return_to={Routes.exercise_index_path(@socket, :index)}
+    />
+  </.modal>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="exercises">
+    <%= for exercise <- @exercises do %>
+      <tr id={"exercise-#{exercise.id}"}>
+
+        <td>
+          <span><%= live_redirect "Show", to: Routes.exercise_show_path(@socket, :show, exercise) %></span>
+          <span><%= live_patch "Edit", to: Routes.exercise_index_path(@socket, :edit, exercise) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: exercise.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= live_patch "New Exercise", to: Routes.exercise_index_path(@socket, :new) %></span>

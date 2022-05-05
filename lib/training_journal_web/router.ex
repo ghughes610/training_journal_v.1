@@ -20,6 +20,8 @@ defmodule TrainingJournalWeb.Router do
     live "/", IndexLive
     live "/workouts", WorkoutLive
     live "/workout/circuit", CircuitLive
+    live "/chart", ChartLive
+    live "/circuit/exercise", ExerciseLive
   end
 
   # Other scopes may use custom stacks.

@@ -20,7 +20,7 @@ defmodule TrainingJournalWeb.CircuitLive do
 
   def handle_event(
         "create_circuit",
-        %{"name" => name, "focus" => focus, "metadata" => metadata},
+        %{"name" => name, "focus" => focus, "metadata" => metadata, "sets" => sets},
         socket
       ) do
 
