@@ -8,6 +8,8 @@ defmodule TrainingJournal.Circuits do
 
   alias TrainingJournal.Circuits.Circuit
 
+  import Ecto.Query
+
   @doc """
   Returns the list of circuits.
 
@@ -36,6 +38,12 @@ defmodule TrainingJournal.Circuits do
 
   """
   def get_circuit!(id), do: Repo.get!(Circuit, id)
+
+
+  def get_workout_circuits(workout_id) do
+      list_circuits()
+      |> Enum.filter(&(&1.workout_id == workout_id))
+  end
 
   @doc """
   Creates a circuit.

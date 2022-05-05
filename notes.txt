@@ -1,0 +1,6 @@
+format metadata method and stop passing in the block of metadata pass in parts of it and construct the map 
+
+add button to increment the sets 
+
+
+

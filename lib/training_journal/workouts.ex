@@ -18,7 +18,8 @@ defmodule TrainingJournal.Workouts do
 
   """
   def list_workouts do
-    Repo.all(Workout)
+    query = from w in Workout, order_by: [desc: w.inserted_at]
+    Repo.all(query)
   end
 
   @doc """

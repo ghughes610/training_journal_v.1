@@ -6,12 +6,13 @@ defmodule TrainingJournalWeb.WorkoutLive do
   def mount(_params, _session, socket) do
     workouts = Workouts.list_workouts()
     workout = workouts |> Enum.random()
+
     socket =
       assign(socket,
         workout: workout,
         workouts: workouts,
-        unfinished_workouts: Enum.filter(workouts, fn workout -> workout.completed == false end ),
-        editing: %{id: 14, name: "", type: "", metadata: %{}},
+        unfinished_workouts: Enum.filter(workouts, fn workout -> workout.completed == false end),
+        editing: %{id: 14, name: "", type: "", metadata: %{}}
       )
 
     {:ok, socket}
@@ -51,14 +52,12 @@ defmodule TrainingJournalWeb.WorkoutLive do
         %{completed: !workout.completed}
       )
 
-      workouts = Workouts.list_workouts()
+    workouts = Workouts.list_workouts()
 
-      socket = assign(socket, workouts: workouts)
+    socket = assign(socket, workouts: workouts)
 
-      {:noreply, socket}
-
+    {:noreply, socket}
   end
-
 
   def handle_event("_workout", %{"id" => id}, socket) do
     workout = Workouts.get_workout!(id)
@@ -69,12 +68,11 @@ defmodule TrainingJournalWeb.WorkoutLive do
         %{completed: !workout.completed}
       )
 
-      workouts = Workouts.list_workouts()
+    workouts = Workouts.list_workouts()
 
-      socket = assign(socket, workouts: workouts)
+    socket = assign(socket, workouts: workouts)
 
-      {:noreply, socket}
-
+    {:noreply, socket}
   end
 
   def handle_event("update_editing", %{"id" => id}, socket) do
@@ -83,13 +81,15 @@ defmodule TrainingJournalWeb.WorkoutLive do
     {:noreply, assign(socket, :editing, editing)}
   end
 
-  def handle_event("create_workout", %{"name" => name, "type" => type, "metadata" => metadata}, socket) do
-
+  def handle_event(
+        "create_workout",
+        %{"name" => name, "type" => type, "metadata" => metadata},
+        socket
+      ) do
     metadata =
       metadata
       |> JSON.decode()
       |> elem(1)
-
 
     with {:ok, new_workout} <-
            Workouts.create_workout(%{
@@ -107,7 +107,6 @@ defmodule TrainingJournalWeb.WorkoutLive do
       {:noreply, assign(socket, :workouts, workouts)}
     end
   end
-
 
   defp update_workout(workouts, new_workout) do
     Enum.map(workouts, fn workout ->
@@ -190,5 +189,4 @@ defmodule TrainingJournalWeb.WorkoutLive do
     </div>
     """
   end
-
 end

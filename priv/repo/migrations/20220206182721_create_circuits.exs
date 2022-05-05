@@ -8,7 +8,7 @@ defmodule TrainingJournal.Repo.Migrations.CreateCircuits do
       add :completed, :boolean, default: false, null: false
       add :rest_time, :string, default: "90 seconds", null: "90 seconds"
       add :metadata, :map, null: false, default: %{}
-      add :workout_id, references(:workouts, on_delete: :nothing)
+      add :workout_id, references(:workouts, on_delete: :delete_all)
 
       timestamps()
     end
