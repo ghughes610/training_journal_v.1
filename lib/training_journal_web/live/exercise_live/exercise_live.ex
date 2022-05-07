@@ -11,8 +11,37 @@ defmodule TrainingJournalWeb.ExerciseLive do
       assign(socket,
         exercises: exercises
       )
-      IO.inspect(socket)
-
+      IO.inspect(socket.assigns.id)
     {:ok, socket}
+  end
+
+  def handle_event(
+    "create_exercise",
+    %{"name" => name, "reps" => reps, "sets" => sets, "metadata" => metadata, "weight" => weight},
+    socket
+    ) do
+      metadata =
+        metadata
+        |> JSON.decode()
+        |> elem(1)
+        with {:ok, new_exercise} <-
+                Exercises.create_exercise(%{
+                  name: name,
+                  reps: reps,
+                  sets: sets,
+                  weight: weight,
+                  metadata: metadata,
+                  circuit_id: socket.assigns.id
+                }) do
+
+          exercises = get_exercises(socket)
+          exercises = [new_exercise | exercises]
+
+          {:noreply, assign(socket, :exercises, exercises)}
+        end
+  end
+
+  def get_exercises(socket) do
+    socket.assigns.exercises
   end
 end
