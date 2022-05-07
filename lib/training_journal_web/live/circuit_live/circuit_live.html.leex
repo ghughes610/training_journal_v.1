@@ -16,10 +16,12 @@
   <%= for circuit <- @circuits do %>
     <div class="flex flex-col m-8 mr-3.5 max-w-sm rounded overflow-hidden shadow-lg bg-blue-500 p-2">
       <div>
-        name: <%= circuit.name %>
-      </div>
-      <div>
-        focus: <%= circuit.focus %>
+        <%= live_patch circuit.name,
+          to: Routes.live_path(
+          @socket,
+          TrainingJournalWeb.ExerciseLive,
+          id: circuit.id
+        ) %>
       </div>
     </div>
   <% end  %>
