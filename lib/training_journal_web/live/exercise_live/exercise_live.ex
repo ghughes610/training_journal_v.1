@@ -11,7 +11,6 @@ defmodule TrainingJournalWeb.ExerciseLive do
       assign(socket,
         exercises: exercises
       )
-      IO.inspect(socket.assigns.id)
     {:ok, socket}
   end
 
