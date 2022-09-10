@@ -136,31 +136,31 @@ defmodule TrainingJournalWeb.WorkoutLive do
     socket.assigns.workouts
   end
 
-    defp exercise_form(selected_workout) do
-    assigns = %{selected_workout: selected_workout}
+  defp exercise_form(selected_workout) do
+  assigns = %{selected_workout: selected_workout}
 
-    ~L"""
-    <div class="card">
-      <div class="body">
-        <div class="row">
-          <div class="deploys">
-            <span>
-              Fingers: <%= @selected_workout.finger_training %>
-            </span>
-          </div>
+  ~L"""
+  <div class="card">
+    <div class="body">
+      <div class="row">
+        <div class="deploys">
           <span>
-            Cross Training: <%= @selected_workout.cross_training %>
+            Fingers: <%= @selected_workout.finger_training %>
           </span>
         </div>
-        <blockquote>
-          <%= @selected_workout.date %>
-        </blockquote>
-        <blockquote>
-          <%= @selected_workout.completed %>
-        </blockquote>
+        <span>
+          Cross Training: <%= @selected_workout.cross_training %>
+        </span>
       </div>
+      <blockquote>
+        <%= @selected_workout.date %>
+      </blockquote>
+      <blockquote>
+        <%= @selected_workout.completed %>
+      </blockquote>
     </div>
-    """
+  </div>
+  """
   end
 
   defp expand_exercise(selected_workout) do
@@ -198,7 +198,7 @@ defmodule TrainingJournalWeb.WorkoutLive do
 
   # {"focus": "strengh", "days_on": 1, "freshness": 5, "intensity": 5, "should_train": "No"}
 
-  defp make_slider(name, min \\ 0, max \\ 10) do
+  def make_slider(name, min \\ 0, max \\ 10) do
     assigns = %{
       min: min,
       max: max,
