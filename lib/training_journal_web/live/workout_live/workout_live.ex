@@ -136,6 +136,33 @@ defmodule TrainingJournalWeb.WorkoutLive do
     socket.assigns.workouts
   end
 
+    defp exercise_form(selected_workout) do
+    assigns = %{selected_workout: selected_workout}
+
+    ~L"""
+    <div class="card">
+      <div class="body">
+        <div class="row">
+          <div class="deploys">
+            <span>
+              Fingers: <%= @selected_workout.finger_training %>
+            </span>
+          </div>
+          <span>
+            Cross Training: <%= @selected_workout.cross_training %>
+          </span>
+        </div>
+        <blockquote>
+          <%= @selected_workout.date %>
+        </blockquote>
+        <blockquote>
+          <%= @selected_workout.completed %>
+        </blockquote>
+      </div>
+    </div>
+    """
+  end
+
   defp expand_exercise(selected_workout) do
     assigns = %{selected_workout: selected_workout}
 
