@@ -189,4 +189,37 @@ defmodule TrainingJournalWeb.WorkoutLive do
     </div>
     """
   end
+
+  def make_slider(name, min \\ 0, max \\ 10) do
+    assigns = %{
+      min: min,
+      max: max,
+      name: name
+      }
+
+    ~L"""
+    <div class="flex place-content-center"><%= String.capitalize(@name) |> String.replace("_", " ")  %></div>
+    <div class="flex place-content-center">
+      <div class="m-2"><%= @min %></div>
+        <input type="range" id="volume" name="<%= @name %>" min="<%= @min %>" max="<%= @max %>">
+      <div class="m-2"><%= @max %></div>
+    </div>
+    """
+
+  end
+
+  defp build_workout_metadata(metadata_attrs) do
+    freshness = String.to_integer(metadata_attrs["freshness"])
+
+    should_train =
+      cond do
+        freshness >= 8 -> "Yes"
+        freshness < 7 && freshness >= 6 -> "Maybe"
+        freshness -> "No"
+      end
+
+    metadata_attrs
+    |> Map.put("should_train", should_train)
+
+  end
 end
