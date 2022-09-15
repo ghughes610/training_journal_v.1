@@ -59,7 +59,7 @@ defmodule TrainingJournalWeb.WorkoutLive do
     {:noreply, socket}
   end
 
-  def handle_event("_workout", %{"id" => id}, socket) do
+  def handle_event("workout", %{"id" => id}, socket) do
     workout = Workouts.get_workout!(id)
 
     {:ok, _workout} =
@@ -83,13 +83,23 @@ defmodule TrainingJournalWeb.WorkoutLive do
 
   def handle_event(
         "create_workout",
-        %{"name" => name, "type" => type, "metadata" => metadata},
+        %{
+        "name" => name,
+        "type" => type,
+        "metadata" => metadata
+        # "freshness" => freshness,
+        # "days_on" => days_on
+        },
         socket
       ) do
-    metadata =
-      metadata
-      |> JSON.decode()
-      |> elem(1)
+
+    metadata_attrs =
+      %{}
+      # |> Map.put("freshness", freshness)
+      # |> Map.put("days_on", days_on)
+
+
+      # build_workout_metadata(metadata_attrs)
 
     with {:ok, new_workout} <-
            Workouts.create_workout(%{
@@ -99,7 +109,7 @@ defmodule TrainingJournalWeb.WorkoutLive do
              cross_training: false,
              date: Timex.now(),
              type: type,
-             metadata: metadata
+             metadata: metadata_attrs
            }) do
       workouts = get_workouts(socket)
       workouts = [new_workout | workouts]
@@ -198,14 +208,13 @@ defmodule TrainingJournalWeb.WorkoutLive do
       }
 
     ~L"""
-    <div class="flex place-content-center"><%= String.capitalize(@name) |> String.replace("_", " ")  %></div>
+    <div class="flex place-content-center text-cyan-50"><%= String.capitalize(@name) |> String.replace("_", " ")  %></div>
     <div class="flex place-content-center">
-      <div class="m-2"><%= @min %></div>
+      <div class="m-2 text-red-500"><%= @min %></div>
         <input type="range" id="volume" name="<%= @name %>" min="<%= @min %>" max="<%= @max %>">
-      <div class="m-2"><%= @max %></div>
+      <div class="m-2 text-green-500"><%= @max %></div>
     </div>
     """
-
   end
 
   defp build_workout_metadata(metadata_attrs) do
