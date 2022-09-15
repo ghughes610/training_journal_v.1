@@ -1,26 +1,25 @@
 defmodule TrainingJournalWeb.CircuitLive do
   use TrainingJournalWeb, :live_view
 
-  alias TrainingJournal.Circuits
-  alias TrainingJournal.Repo
-
+  alias TrainingJournal.{
+    Circuits,
+    Repo
+  }
   import Ecto.Query
 
 
 
   def mount(%{"id" => id}, _session, socket) do
     id = String.to_integer(id)
-
     circuits = Circuits.get_workout_circuits(id)
-
     socket = assign(socket, circuits: circuits, id: id)
-    {:ok, socket}
 
+    {:ok, socket}
   end
 
   def handle_event(
         "create_circuit",
-        %{"name" => name, "focus" => focus, "metadata" => metadata, "sets" => sets},
+        %{"name" => name, "focus" => focus, "metadata" => metadata},
         socket
       ) do
 
@@ -44,7 +43,6 @@ defmodule TrainingJournalWeb.CircuitLive do
       {:noreply, assign(socket, :circuits, circuits)}
     end
   end
-
 
   def get_circuits(socket) do
     socket.assigns.circuits

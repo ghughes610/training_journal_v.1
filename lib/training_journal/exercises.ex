@@ -37,6 +37,11 @@ defmodule TrainingJournal.Exercises do
   """
   def get_exercise!(id), do: Repo.get!(Exercise, id)
 
+  def get_circuit_exercises(circuit_id) do
+      list_exercises()
+      |> Enum.filter(&(&1.circuit_id == circuit_id))
+  end
+
   @doc """
   Creates a exercise.
 
