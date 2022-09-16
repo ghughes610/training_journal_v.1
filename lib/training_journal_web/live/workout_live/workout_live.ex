@@ -59,7 +59,7 @@ defmodule TrainingJournalWeb.WorkoutLive do
     {:noreply, socket}
   end
 
-  def handle_event("_workout", %{"id" => id}, socket) do
+  def handle_event("workout", %{"id" => id}, socket) do
     workout = Workouts.get_workout!(id)
 
     {:ok, _workout} =
@@ -83,13 +83,23 @@ defmodule TrainingJournalWeb.WorkoutLive do
 
   def handle_event(
         "create_workout",
-        %{"name" => name, "type" => type, "metadata" => metadata},
+        %{
+        "name" => name,
+        "type" => type,
+        "metadata" => metadata
+        # "freshness" => freshness,
+        # "days_on" => days_on
+        },
         socket
       ) do
-    metadata =
-      metadata
-      |> JSON.decode()
-      |> elem(1)
+
+    metadata_attrs =
+      %{}
+      # |> Map.put("freshness", freshness)
+      # |> Map.put("days_on", days_on)
+
+
+      # build_workout_metadata(metadata_attrs)
 
     with {:ok, new_workout} <-
            Workouts.create_workout(%{
@@ -99,7 +109,7 @@ defmodule TrainingJournalWeb.WorkoutLive do
              cross_training: false,
              date: Timex.now(),
              type: type,
-             metadata: metadata
+             metadata: metadata_attrs
            }) do
       workouts = get_workouts(socket)
       workouts = [new_workout | workouts]
@@ -122,71 +132,18 @@ defmodule TrainingJournalWeb.WorkoutLive do
     socket.assigns.workouts
   end
 
-  defp link_body(workout) do
-    assigns = %{name: workout.name, date: workout.date}
+  defp build_workout_metadata(metadata_attrs) do
+    freshness = String.to_integer(metadata_attrs["freshness"])
 
-    ~L"""
-    <%= @name %>
-    """
-  end
+    should_train =
+      cond do
+        freshness >= 8 -> "Yes"
+        freshness < 7 && freshness >= 6 -> "Maybe"
+        freshness -> "No"
+      end
 
-  defp card_body(selected_workout) do
-    assigns = %{selected_workout: selected_workout}
+    metadata_attrs
+    |> Map.put("should_train", should_train)
 
-    ~L"""
-    <div class="card">
-      <div class="header">
-        <h2><%= @selected_workout.name %></h2>
-        <button
-          phx-click="toggle-status"
-          phx-value-id="<%= @selected_workout.id %>"
-          phx-disable-with="Saving...">
-         Completed: <%= @selected_workout.completed %>
-        </button>
-      </div>
-      <div class="body">
-        <div class="row">
-          <div class="deploys">
-            <span>
-              Fingers: <%= @selected_workout.finger_training %>
-            </span>
-          </div>
-          <span>
-            Cross Training: <%= @selected_workout.cross_training %>
-          </span>
-        </div>
-        <blockquote>
-          <%= @selected_workout.date %>
-        </blockquote>
-      </div>
-    </div>
-    """
-  end
-
-  defp exercise_form(selected_workout) do
-    assigns = %{selected_workout: selected_workout}
-
-    ~L"""
-    <div class="card">
-      <div class="body">
-        <div class="row">
-          <div class="deploys">
-            <span>
-              Fingers: <%= @selected_workout.finger_training %>
-            </span>
-          </div>
-          <span>
-            Cross Training: <%= @selected_workout.cross_training %>
-          </span>
-        </div>
-        <blockquote>
-          <%= @selected_workout.date %>
-        </blockquote>
-        <blockquote>
-          <%= @selected_workout.completed %>
-        </blockquote>
-      </div>
-    </div>
-    """
   end
 end
