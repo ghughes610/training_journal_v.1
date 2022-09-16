@@ -1,6 +1,6 @@
-defmodule TrainingJournalWeb.Live.ComponentsLive.SliderLive do
-  use TrainingJournalWeb, :live_view
-  
+defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
+use TrainingJournalWeb, :live_view
+
   def make_slider(name, min \\ 0, max \\ 10) do
     assigns = %{
       min: min,
@@ -17,4 +17,5 @@ defmodule TrainingJournalWeb.Live.ComponentsLive.SliderLive do
     </div>
     """
   end
+
 end
