@@ -34,7 +34,7 @@ defmodule TrainingJournalWeb.CircuitLive do
              focus: focus,
              completed: false,
              metadata: metadata,
-             rest_time: rest_time,
+             rest_time: "#{rest_time} minutes",
              workout_id: socket.assigns.id
            }) do
 
