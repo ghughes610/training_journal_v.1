@@ -63,4 +63,23 @@ use TrainingJournalWeb, :live_view
     """
   end
 
+  def card_component(attrs) do
+    assigns = %{attrs: attrs}
+    ~L"""
+    <div class="flex flex-col m-8 mr-3.5 max-w-sm rounded overflow-hidden shadow-lg bg-blue-500">
+        <div class="px-6 py-4">
+            <div class= "flex justify-around items-center font-bold text-xl mb-2">
+              <button phx-click="delete_attrs" phx-value-id="<%= attrs.id %>" class="m-1 p-2 max-w-sm rounded overflow-hidden shadow-lg bg-red-500">X</button>
+              <button phx-click="expand_attrs" phx-value-id="<%= attrs.id %>" class="m-1 p-2 max-w-sm rounded overflow-hidden shadow-lg bg-red-500">+</button>
+
+            </div>
+            <%= if attrs.completed  do %>
+            <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.exercise_form(attrs) %>
+            <% end %>
+          </div>
+        </div>
+    </div>
+    """
+  end
+
 end
