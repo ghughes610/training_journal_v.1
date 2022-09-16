@@ -19,7 +19,7 @@ defmodule TrainingJournalWeb.CircuitLive do
 
   def handle_event(
         "create_circuit",
-        %{"name" => name, "focus" => focus, "metadata" => metadata},
+        %{"name" => name, "focus" => focus, "metadata" => metadata, "rest_time" => rest_time},
         socket
       ) do
 
@@ -34,6 +34,7 @@ defmodule TrainingJournalWeb.CircuitLive do
              focus: focus,
              completed: false,
              metadata: metadata,
+             rest_time: rest_time,
              workout_id: socket.assigns.id
            }) do
 
