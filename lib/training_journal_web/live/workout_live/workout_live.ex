@@ -13,8 +13,7 @@ defmodule TrainingJournalWeb.WorkoutLive do
 
     socket =
       assign(socket,
-        workouts: workouts,
-        unfinished_workouts: Enum.filter(workouts, fn workout -> workout.completed == false end)
+        workouts: workouts
       )
 
     {:ok, socket}
@@ -112,7 +111,6 @@ defmodule TrainingJournalWeb.WorkoutLive do
       {:noreply, assign(socket, :workouts, workouts)}
     end
   end
-
 
   def update_workout(workouts, new_workout) do
     Enum.map(workouts, fn workout ->
