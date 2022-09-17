@@ -79,4 +79,13 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
     end
   end
 
+  def make_radio_button(field) do
+    assigns = %{field: field}
+    ~L"""
+    <div class="flex items-center mb-4">
+    <input id="default-checkbox" name="<%= @field %>" type="checkbox" value="true" class="ml-3 w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+    <label for="default-checkbox" class="ml-3 text-xl font-medium text-gray-900 dark:text-gray-300"><%= @field %></label>
+    </div>
+    """
+  end
 end

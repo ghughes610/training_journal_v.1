@@ -32,6 +32,7 @@ defmodule TrainingJournalWeb.WorkoutLive do
     {:noreply, socket}
   end
 
+  @impl true
   def handle_event("delete_workout", %{"id" => id}, socket) do
     workouts = get_workouts(socket)
     workout = Workouts.get_workout!(id)
@@ -86,17 +87,18 @@ defmodule TrainingJournalWeb.WorkoutLive do
         %{
         "name" => name,
         "type" => type,
-        "metadata" => metadata
-        # "freshness" => freshness,
-        # "days_on" => days_on
+        "finger_training" => finger_training,
+        "cross_training" => cross_training,
+        "freshness" => freshness,
+        "days_on" => days_on
         },
         socket
       ) do
 
     metadata_attrs =
       %{}
-      # |> Map.put("freshness", freshness)
-      # |> Map.put("days_on", days_on)
+      |> Map.put("freshness", freshness)
+      |> Map.put("days_on", days_on)
 
 
       # build_workout_metadata(metadata_attrs)
@@ -105,8 +107,8 @@ defmodule TrainingJournalWeb.WorkoutLive do
            Workouts.create_workout(%{
              name: name,
              completed: false,
-             finger_training: true,
-             cross_training: false,
+             finger_training: String.to_atom(finger_training),
+             cross_training: String.to_atom(cross_training),
              date: Timex.now(),
              type: type,
              metadata: metadata_attrs
