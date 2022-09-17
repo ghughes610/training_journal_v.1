@@ -2,6 +2,12 @@
         <div>
                 <div class="flex place-content-center">
                         <form phx-submit="create_exercise" class="flex flex-col" >
+                                <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("push") %>
+                                <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("pull") %>
+                                <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("over_head") %>
+                                <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("dynamic") %>
+                                <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("isometric") %>
+                                <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("fingers") %>
                                 <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_text_input("weight") %>
                                 <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_slider("reps", 1, 15) %>
                                 <button class="bg-indigo-600 text-white text-sm leading-6 font-medium py-2 px-3 rounded-lg bg-green-700 hover:bg-green-500" type="submit">create workout</button>

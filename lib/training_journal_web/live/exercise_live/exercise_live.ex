@@ -12,33 +12,24 @@ defmodule TrainingJournalWeb.ExerciseLive do
     {:ok, socket}
   end
 
-   def handle_event(
-        "create_exercise",
-        %{
-          "name" => name,
-          "metadata" => metadata,
-          "sets" => sets,
-          "reps" => reps,
-          "weight" => weight
-          },
-        socket
-      ) do
+  @impl true
+   def handle_event("create_exercise", params, socket) do
 
-    metadata =
-      metadata
-      |> JSON.decode()
-      |> elem(1)
+    data = %{
+      name: "make this with conditionals",
+      reps: String.to_integer(params["reps"]),
+      weight: params["weight"],
+      push: params["push"],
+      pull: params["pull"],
+      dynamic: params["dynamic"],
+      isometric: params["isometric"],
+      over_head: params["over_head"],
+      fingers: params["fingers"],
+      circuit_id: socket.assigns.id,
+      metadata: %{}
+    }
 
-    with {:ok, new_exercise} <-
-           Exercises.create_exercise(%{
-             name: name,
-             completed: false,
-             metadata: metadata,
-             circuit_id: socket.assigns.id,
-             sets: sets,
-             reps: reps,
-             weight: weight
-           }) do
+    with {:ok, new_exercise} <- Exercises.create_exercise(data) do
 
       exercises = get_exercises(socket)
       exercises = [new_exercise | exercises]
