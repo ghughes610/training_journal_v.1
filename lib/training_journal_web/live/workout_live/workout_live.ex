@@ -3,6 +3,7 @@ defmodule TrainingJournalWeb.WorkoutLive do
 
   alias TrainingJournal.{
     Calculators.ShouldTrainCalculator,
+    Builders.NameBuilder,
     Workouts
   }
 
@@ -86,27 +87,23 @@ defmodule TrainingJournalWeb.WorkoutLive do
   end
 
   def handle_event("create_workout", params, socket) do
-    type_letters = String.split(params["type"], " ") |> Enum.map(fn str -> String.first(str) end) |> Enum.join("")
-    today = Timex.format!(Timex.now(), "{M}/{D}")
-    day_of_week = Timex.now |> Timex.weekday |> Timex.day_shortname
-    name = day_of_week<>"_"<>today<>"_"<>type_letters
-    should_train = ShouldTrainCalculator.should_train(params["freshness"], params["days_on"])
-    
+
     data = %{
-      name: name,
+      name: NameBuilder.build_name(params["type"]),
       type: params["type"],
       finger_training: params["finger_training"] || false,
       cross_training: params["cross_training"] || true,
       completed: false,
       metadata: %{
         notes: params["notes"],
-        should_train: should_train,
+        should_train: ShouldTrainCalculator.should_train(params["freshness"], params["days_on"]),
         freshness: params["freshness"],
         days_on: params["days_on"],
         body_weight: params["body_weight"],
-        day_of_week: day_of_week
+        day_of_week: Timex.now |> Timex.weekday |> Timex.day_shortname
        }
     }
+
     with {:ok, new_workout} <- Workouts.create_workout(data) do
 
       workouts = get_workouts(socket)
@@ -116,32 +113,19 @@ defmodule TrainingJournalWeb.WorkoutLive do
     end
   end
 
-  # defp update_workout(workouts, new_workout) do
-  #   Enum.map(workouts, fn workout ->
-  #     if workout.id == new_workout.id do
-  #       new_workout
-  #     else
-  #       workout
-  #     end
-  #   end)
-  # end
+
+  def update_workout(workouts, new_workout) do
+    Enum.map(workouts, fn workout ->
+      if workout.id == new_workout.id do
+        new_workout
+      else
+        workout
+      end
+    end)
+  end
 
   defp get_workouts(socket) do
     socket.assigns.workouts
   end
 
-  # defp build_workout_metadata(metadata_attrs) do
-  #   freshness = String.to_integer(metadata_attrs["freshness"])
-
-  #   should_train =
-  #     cond do
-  #       freshness >= 8 -> "Yes"
-  #       freshness < 7 && freshness >= 6 -> "Maybe"
-  #       freshness -> "No"
-  #     end
-
-  #   metadata_attrs
-  #   |> Map.put("should_train", should_train)
-
-  # end
 end
