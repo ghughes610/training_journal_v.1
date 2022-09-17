@@ -5,11 +5,9 @@ defmodule TrainingJournalWeb.WorkoutLive do
   @impl true
   def mount(_params, _session, socket) do
     workouts = Workouts.list_workouts()
-    workout = workouts |> Enum.random()
 
     socket =
       assign(socket,
-        workout: workout,
         workouts: workouts,
         unfinished_workouts: Enum.filter(workouts, fn workout -> workout.completed == false end)
       )
@@ -81,23 +79,26 @@ defmodule TrainingJournalWeb.WorkoutLive do
     {:noreply, assign(socket, :editing, editing)}
   end
 
-  def handle_event(
+   def handle_event(
         "create_workout",
         %{
         "name" => name,
         "type" => type,
-        "finger_training" => finger_training,
         "cross_training" => cross_training,
-        # "freshness" => freshness,
-        # "days_on" => days_on
+        "finger_training" => finger_training,
+        "freshness" => freshness,
+        "days_on" => days_on,
+        "body_weight" => body_weight
         },
         socket
       ) do
+        IO.puts("here match /4")
 
     metadata_attrs =
       %{}
-      # |> Map.put("freshness", freshness)
-      # |> Map.put("days_on", days_on)
+      |> Map.put("freshness", freshness)
+      |> Map.put("days_on", days_on)
+      |> Map.put("body_weight", body_weight)
 
 
       # build_workout_metadata(metadata_attrs)
@@ -111,6 +112,29 @@ defmodule TrainingJournalWeb.WorkoutLive do
              date: Timex.now(),
              type: type,
              metadata: metadata_attrs
+           }) do
+
+      workouts = get_workouts(socket)
+      workouts = [new_workout | workouts]
+
+      {:noreply, assign(socket, :workouts, workouts)}
+    end
+  end
+
+
+  def handle_event("create_workout", params, socket) do
+    IO.puts("catch all")
+    IO.inspect(params)
+    with {:ok, new_workout} <-
+           Workouts.create_workout(%{
+             name: "name",
+             completed: false,
+            #  finger_training: String.to_atom(finger_training),
+             finger_training: false,
+             cross_training: false,
+             date: Timex.now(),
+             type: "that",
+             metadata: %{}
            }) do
 
       workouts = get_workouts(socket)

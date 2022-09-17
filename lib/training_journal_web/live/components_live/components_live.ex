@@ -58,6 +58,12 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
         <blockquote>
           Completed: <%= @selected_workout.completed %>
         </blockquote>
+        <blockquote>
+          Cross Training: <%= @selected_workout.cross_training %>
+        </blockquote>
+        <blockquote>
+          Finger Training: <%= @selected_workout.finger_training %>
+        </blockquote>
       </div>
     </div>
     """
@@ -133,7 +139,7 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
       ~L"""
       <div class="flex items-center mb-4">
       <input id="default-checkbox" name="<%= @field %>" type="checkbox" value="true" class="ml-3 w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-      <label for="default-checkbox" class="ml-3 text-xl font-medium text-gray-900 dark:text-gray-300"><%= @field %></label>
+      <label for="default-checkbox" class="ml-3 text-xl font-medium text-gray-900 dark:text-gray-300"><%= @display_name %></label>
       </div>
       """
     end
