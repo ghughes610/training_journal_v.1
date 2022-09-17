@@ -2,7 +2,7 @@
   <div class="place-content-center w-1/3">
     <form phx-submit="create_workout" class="flex flex-col mt-5" >
       <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_text_input("name") %>
-      <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_select_menu("type", "Type", ["General", "Power", "Endurance", "Power Endurance"]) %>
+      <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_text_input("type") %>
       <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_slider("freshness") %>
       <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_custom_slider("days_on", "Days On") %>
       <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("finger_training", "Finger Training") %>

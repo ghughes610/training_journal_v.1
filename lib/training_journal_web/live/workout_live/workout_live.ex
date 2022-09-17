@@ -32,7 +32,6 @@ defmodule TrainingJournalWeb.WorkoutLive do
     {:noreply, socket}
   end
 
-  @impl true
   def handle_event("delete_workout", %{"id" => id}, socket) do
     workouts = get_workouts(socket)
     workout = Workouts.get_workout!(id)
@@ -89,16 +88,16 @@ defmodule TrainingJournalWeb.WorkoutLive do
         "type" => type,
         "finger_training" => finger_training,
         "cross_training" => cross_training,
-        "freshness" => freshness,
-        "days_on" => days_on
+        # "freshness" => freshness,
+        # "days_on" => days_on
         },
         socket
       ) do
 
     metadata_attrs =
       %{}
-      |> Map.put("freshness", freshness)
-      |> Map.put("days_on", days_on)
+      # |> Map.put("freshness", freshness)
+      # |> Map.put("days_on", days_on)
 
 
       # build_workout_metadata(metadata_attrs)
@@ -121,32 +120,32 @@ defmodule TrainingJournalWeb.WorkoutLive do
     end
   end
 
-  defp update_workout(workouts, new_workout) do
-    Enum.map(workouts, fn workout ->
-      if workout.id == new_workout.id do
-        new_workout
-      else
-        workout
-      end
-    end)
-  end
+  # defp update_workout(workouts, new_workout) do
+  #   Enum.map(workouts, fn workout ->
+  #     if workout.id == new_workout.id do
+  #       new_workout
+  #     else
+  #       workout
+  #     end
+  #   end)
+  # end
 
   defp get_workouts(socket) do
     socket.assigns.workouts
   end
 
-  defp build_workout_metadata(metadata_attrs) do
-    freshness = String.to_integer(metadata_attrs["freshness"])
+  # defp build_workout_metadata(metadata_attrs) do
+  #   freshness = String.to_integer(metadata_attrs["freshness"])
 
-    should_train =
-      cond do
-        freshness >= 8 -> "Yes"
-        freshness < 7 && freshness >= 6 -> "Maybe"
-        freshness -> "No"
-      end
+  #   should_train =
+  #     cond do
+  #       freshness >= 8 -> "Yes"
+  #       freshness < 7 && freshness >= 6 -> "Maybe"
+  #       freshness -> "No"
+  #     end
 
-    metadata_attrs
-    |> Map.put("should_train", should_train)
+  #   metadata_attrs
+  #   |> Map.put("should_train", should_train)
 
-  end
+  # end
 end
