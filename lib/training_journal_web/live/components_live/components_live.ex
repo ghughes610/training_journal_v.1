@@ -1,5 +1,5 @@
 defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
-use TrainingJournalWeb, :live_view
+  use TrainingJournalWeb, :view
 
   def make_slider(name, min \\ 0, max \\ 10) do
     assigns = %{
@@ -36,7 +36,7 @@ use TrainingJournalWeb, :live_view
     """
   end
 
-   def expand_card(selected_workout) do
+  def expand_workout_card(selected_workout) do
     assigns = %{selected_workout: selected_workout}
 
     ~L"""
@@ -63,23 +63,20 @@ use TrainingJournalWeb, :live_view
     """
   end
 
-  def card_component(attrs) do
-    assigns = %{attrs: attrs}
-    ~L"""
-    <div class="flex flex-col m-8 mr-3.5 max-w-sm rounded overflow-hidden shadow-lg bg-blue-500">
-        <div class="px-6 py-4">
-        <div class= "flex justify-around items-center font-bold text-xl mb-2">
-          <h3><%= attrs.name %></h3>
-              <button phx-click="delete_attrs" phx-value-id="<%= attrs.id %>" class="m-1 p-2 max-w-sm rounded overflow-hidden shadow-lg bg-red-500">X</button>
-              <button phx-click="expand_attrs" phx-value-id="<%= attrs.id %>" class="m-1 p-2 max-w-sm rounded overflow-hidden shadow-lg bg-red-500">+</button>
-            </div>
-            <%= if attrs.completed  do %>
-            <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.exercise_form(attrs) %>
-            <% end %>
-          </div>
-        </div>
-    </div>
-    """
+  def make_text_input(field, display_name \\ nil) do
+    assigns = %{
+      field: field,
+      display_name: display_name
+    }
+    if display_name == nil do
+      ~L"""
+      <input type="text" placeholder="<%= String.capitalize(@field) %>" name="<%= @field %>" class="m-3 p-2 text-center border border-green-500"/>
+      """
+    else
+      ~L"""
+      <input type="text" placeholder="<%= @display_name %>" name="<%= @field %>" class="m-3 p-2 text-center border border-green-500"/>
+      """
+    end
   end
 
 end
