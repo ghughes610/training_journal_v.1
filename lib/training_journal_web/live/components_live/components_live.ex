@@ -18,7 +18,7 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
     """
   end
 
-  def make_custom_slider(name, display_name, min, max) do
+  def make_custom_slider(name, display_name, min \\ 0, max \\ 10) do
     assigns = %{
       min: min,
       max: max,
@@ -79,6 +79,43 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
     end
   end
 
+  def make_number_input(field, display_name \\ nil, min \\ 0, max \\ 10, default \\ 5) do
+    assigns = %{
+      field: field,
+      display_name: display_name,
+      min: min,
+      max: max,
+      default: default
+    }
+    if display_name == nil do
+      ~L"""
+      <label for="<%= @field %>"><%= @field %></label>
+      <input type="number" id="<%= @field %>"
+        placeholder="<%= String.capitalize(@field) %>"
+        name="<%= @field %>"
+        min="<%= @min %>"
+        max="<%= @max %>"
+        value="<%= @default %>"
+        class="m-3 p-2 text-center border border-green-500"
+      />
+      """
+    else
+      ~L"""
+      <label for="<%= @field %>"><%= @display_name %></label>
+      <input
+        id="<%= @field %>"
+        type="number"
+        placeholder="<%= @display_name %>"
+        name="<%= @field %>"
+        min="<%= @min %>"
+        max="<%= @max %>"
+        value="<%= @default %>"
+        class="m-3 p-2 text-center border border-green-500"
+      />
+      """
+    end
+  end
+
   def make_radio_button(field, display_name \\ nil) do
     assigns = %{
       field: field,
@@ -100,5 +137,23 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
       </div>
       """
     end
+  end
+
+  def make_select_menu(field, display_name \\ nil, opts \\ []) do
+    assigns = %{
+      field: field,
+      display_name: display_name,
+      opts: opts
+    }
+    ~L"""
+    <label for="<%= @field %>" class="block mb-2 text-base font-medium text-gray-900 dark:text-gray-400"><%= @display_name %></label>
+    <select id="<%= @field %>" class="block py-2 px-3 text-base text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+    <%= for opt <- @opts do %>
+      <option value="opt"><%= opt %></option>
+    <% end %>
+
+    </select>
+    """
   end
 end

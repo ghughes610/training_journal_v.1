@@ -11,13 +11,13 @@ defmodule TrainingJournalWeb.WorkoutLive do
       assign(socket,
         workout: workout,
         workouts: workouts,
-        unfinished_workouts: Enum.filter(workouts, fn workout -> workout.completed == false end),
-        editing: %{id: 14, name: "", type: "", metadata: %{}}
+        unfinished_workouts: Enum.filter(workouts, fn workout -> workout.completed == false end)
       )
 
     {:ok, socket}
   end
 
+  @impl true
   def handle_params(%{"id" => id}, _url, socket) do
     id = String.to_integer(id)
 
@@ -113,6 +113,7 @@ defmodule TrainingJournalWeb.WorkoutLive do
              type: type,
              metadata: metadata_attrs
            }) do
+
       workouts = get_workouts(socket)
       workouts = [new_workout | workouts]
 
