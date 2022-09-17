@@ -1,7 +1,11 @@
 defmodule TrainingJournalWeb.WorkoutLive do
   use TrainingJournalWeb, :live_view
 
-  alias TrainingJournal.Workouts
+  alias TrainingJournal.{
+    Calculators.ShouldTrainCalculator,
+    Workouts
+  }
+
   @impl true
   def mount(_params, _session, socket) do
     workouts = Workouts.list_workouts()
@@ -30,6 +34,7 @@ defmodule TrainingJournalWeb.WorkoutLive do
     {:noreply, socket}
   end
 
+  @impl true
   def handle_event("delete_workout", %{"id" => id}, socket) do
     workouts = get_workouts(socket)
     workout = Workouts.get_workout!(id)
@@ -41,6 +46,7 @@ defmodule TrainingJournalWeb.WorkoutLive do
     end
   end
 
+  @impl true
   def handle_event("expand_workout", %{"id" => id}, socket) do
     workout = Workouts.get_workout!(id)
 
@@ -79,63 +85,32 @@ defmodule TrainingJournalWeb.WorkoutLive do
     {:noreply, assign(socket, :editing, editing)}
   end
 
-   def handle_event(
-        "create_workout",
-        %{
-        "name" => name,
-        "type" => type,
-        "cross_training" => cross_training,
-        "finger_training" => finger_training,
-        "freshness" => freshness,
-        "days_on" => days_on,
-        "body_weight" => body_weight
-        },
-        socket
-      ) do
-        IO.puts("here match /4")
-
-    metadata_attrs =
-      %{}
-      |> Map.put("freshness", freshness)
-      |> Map.put("days_on", days_on)
-      |> Map.put("body_weight", body_weight)
-
-
-      # build_workout_metadata(metadata_attrs)
-
-    with {:ok, new_workout} <-
-           Workouts.create_workout(%{
-             name: name,
-             completed: false,
-             finger_training: String.to_atom(finger_training),
-             cross_training: String.to_atom(cross_training),
-             date: Timex.now(),
-             type: type,
-             metadata: metadata_attrs
-           }) do
-
-      workouts = get_workouts(socket)
-      workouts = [new_workout | workouts]
-
-      {:noreply, assign(socket, :workouts, workouts)}
-    end
-  end
-
-
   def handle_event("create_workout", params, socket) do
-    IO.puts("catch all")
-    IO.inspect(params)
-    with {:ok, new_workout} <-
-           Workouts.create_workout(%{
-             name: "name",
-             completed: false,
-            #  finger_training: String.to_atom(finger_training),
-             finger_training: false,
-             cross_training: false,
-             date: Timex.now(),
-             type: "that",
-             metadata: %{}
-           }) do
+    type_letters = String.split(params["type"], " ") |> Enum.map(fn str -> String.first(str) end) |> Enum.join("")
+    today = Timex.format!(Timex.now(), "{M}/{D}")
+    day_of_week = Timex.now |> Timex.weekday |> Timex.day_shortname
+    name = day_of_week<>"_"<>today<>"_"<>type_letters
+    should_train = ShouldTrainCalculator.should_train(params["freshness"], params["days_on"])
+    data = %{
+      name: name,
+      type: params["type"],
+      finger_training: params["finger_training"] || false,
+      cross_training: params["cross_training"] || true,
+      completed: false,
+      metadata: %{
+        notes: params["notes"],
+        should_train: should_train,
+        freshness: params["freshness"],
+        days_on: params["days_on"],
+        body_weight: params["body_weight"],
+        day_of_week: day_of_week
+       }
+    }
+
+    IO.puts("data below")
+    IO.inspect(data)
+
+    with {:ok, new_workout} <- Workouts.create_workout(data) do
 
       workouts = get_workouts(socket)
       workouts = [new_workout | workouts]

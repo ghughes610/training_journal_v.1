@@ -5,7 +5,6 @@ defmodule TrainingJournal.Workouts.Workout do
   schema "workouts" do
     field :completed, :boolean, default: false
     field :cross_training, :boolean, default: false
-    field :date, :utc_datetime
     field :finger_training, :boolean, default: false
     field :name, :string
     field :type, :string
@@ -17,7 +16,7 @@ defmodule TrainingJournal.Workouts.Workout do
   @doc false
   def changeset(workout, attrs) do
     workout
-    |> cast(attrs, [:name, :date, :type, :cross_training, :finger_training, :completed, :metadata])
-    |> validate_required([:name, :date, :type, :cross_training, :finger_training, :completed])
+    |> cast(attrs, [:name, :type, :cross_training, :finger_training, :completed, :metadata])
+    |> validate_required([:name, :type, :cross_training, :finger_training, :completed])
   end
 end

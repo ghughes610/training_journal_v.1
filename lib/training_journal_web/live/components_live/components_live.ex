@@ -53,9 +53,6 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
           </span>
         </div>
         <blockquote>
-          Date: <%= Timex.format!(@selected_workout.date, "{M}-{D}-{YYYY}") %>
-        </blockquote>
-        <blockquote>
           Completed: <%= @selected_workout.completed %>
         </blockquote>
         <blockquote>
@@ -153,12 +150,10 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
     }
     ~L"""
     <label for="<%= @field %>" class="block mb-2 text-base font-medium text-gray-900 dark:text-gray-400"><%= @display_name %></label>
-    <select id="<%= @field %>" class="block py-2 px-3 text-base text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-
-    <%= for opt <- @opts do %>
-      <option value="opt"><%= opt %></option>
-    <% end %>
-
+    <select id="<%= @field %>" name="<%= @field %>" class="block py-2 px-3 text-base text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+      <%= for opt <- @opts do %>
+        <option value="<%= opt %>"><%= opt %></option>
+      <% end %>
     </select>
     """
   end
