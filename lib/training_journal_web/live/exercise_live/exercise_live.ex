@@ -1,7 +1,10 @@
 defmodule TrainingJournalWeb.ExerciseLive do
   use TrainingJournalWeb, :live_view
 
-  alias TrainingJournal.Exercises
+  alias TrainingJournal.{
+    Exercises
+  }
+
 
   @impl true
   def mount(%{"id" => id}, _session, socket) do
@@ -19,12 +22,12 @@ defmodule TrainingJournalWeb.ExerciseLive do
       name: "make this with conditionals",
       reps: String.to_integer(params["reps"]),
       weight: params["weight"],
-      push: params["push"],
-      pull: params["pull"],
-      dynamic: params["dynamic"],
-      isometric: params["isometric"],
-      over_head: params["over_head"],
-      fingers: params["fingers"],
+      push: params["push"] || false,
+      pull: params["pull"] || false,
+      dynamic: params["dynamic"] || false,
+      isometric: params["isometric"] || false,
+      over_head: params["over_head"] || false,
+      fingers: params["fingers"] || false,
       circuit_id: socket.assigns.id,
       metadata: %{}
     }
