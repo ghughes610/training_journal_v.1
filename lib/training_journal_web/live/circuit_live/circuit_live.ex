@@ -2,6 +2,7 @@ defmodule TrainingJournalWeb.CircuitLive do
   use TrainingJournalWeb, :live_view
 
   alias TrainingJournal.{
+    Builders.NameBuilder,
     Circuits
   }
 
@@ -15,21 +16,17 @@ defmodule TrainingJournalWeb.CircuitLive do
 
   def handle_event("create_circuit", params, socket) do
     data = %{
-      name: "",
+      name: NameBuilder.build_name(params["circuit_number"]),
       completed: false,
       number_of_exercises: String.to_integer(params["number_of_exercises"]),
       sets: String.to_integer(params["sets"]),
       rest_time: params["rest_time"],
-      workout_id: socket.assigns.id
+      workout_id: socket.assigns.id,
+      metadata: %{},
+      circuit_number: String.to_integer(params["circuit_number"])
     }
-    with {:ok, new_circuit} <-
-           Circuits.create_circuit(%{
-             name: "test",
-             completed: false,
-             metadata: %{},
 
-
-           }) do
+    with {:ok, new_circuit} <- Circuits.create_circuit(data) do
 
       circuits = get_circuits(socket)
       circuits = [new_circuit | circuits]

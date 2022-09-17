@@ -5,7 +5,7 @@
 
   <div class="flex place-content-center">
     <form phx-submit="create_circuit" class="flex flex-col" >
-    <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_text_input("name") %>
+    <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_text_input("circuit_number") %>
     <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_custom_slider("number_of_exercises", "Number Of Exercises", 1, 5) %>
     <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_slider("sets", 1, 5) %>
     <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_custom_slider("rest_time", "Rest Time (Minutes)", 1, 5) %>
