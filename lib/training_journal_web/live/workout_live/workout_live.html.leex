@@ -16,7 +16,7 @@
 
   <div class="m-5 p-5">
   <%= if Enum.count(@workouts) == 0  do %>
-    <div>nothing here</div>
+    <div class="test-white">Insert A Workout</div>
   <% else %>
      <%= for workout <- @workouts do %>
         <div class="shadow-lg bg-blue-500 w-64">
@@ -28,7 +28,7 @@
                       TrainingJournalWeb.CircuitLive,
                       id: workout.id
                     ) %>
-                    <button phx-click="expand_workout" phx-value-id="<%= workout.id %>" class="m-5 p-2 max-w-sm rounded overflow-hidden shadow-lg bg-red-500">+</button>
+                    <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_expand_button(workout) %>
                 </div>
                 <%= if workout.completed  do %>
                   <div class="m-5 pb-3 font-bold">
