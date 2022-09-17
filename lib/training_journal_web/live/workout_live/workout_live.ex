@@ -47,7 +47,7 @@ defmodule TrainingJournalWeb.WorkoutLive do
   end
 
   @impl true
-  def handle_event("expand_workout", %{"id" => id}, socket) do
+  def handle_event("expand", %{"id" => id}, socket) do
     workout = Workouts.get_workout!(id)
 
     {:ok, _workout} =

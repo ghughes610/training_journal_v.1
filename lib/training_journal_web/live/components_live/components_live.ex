@@ -166,4 +166,12 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
     <button phx-click="delete" phx-value-id="<%= @struct.id %>" class="m-5 p-2 max-w-sm rounded overflow-hidden shadow-lg bg-red-500">X</button>
     """
   end
+
+  def make_expand_button(struct) do
+    assigns = %{ struct: struct }
+    
+    ~L"""
+    <button phx-click="expand" phx-value-id="<%= @struct.id %>" class="m-5 p-2 max-w-sm rounded overflow-hidden shadow-lg bg-red-500">+</button>
+    """
+  end
 end
