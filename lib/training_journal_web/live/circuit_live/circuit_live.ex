@@ -14,6 +14,17 @@ defmodule TrainingJournalWeb.CircuitLive do
     {:ok, socket}
   end
 
+    def handle_event("delete", %{"id" => id}, socket) do
+    circuits = get_circuits(socket)
+    circuit = Circuits.get_circuit!(id)
+
+    with {:ok, deleted_circuit} <- Circuits.delete_circuit(circuit) do
+      circuits = Enum.filter(circuits, fn circuit -> circuit.id != deleted_circuit.id end)
+
+      {:noreply, assign(socket, :circuits, circuits)}
+    end
+  end
+
   def handle_event("create_circuit", params, socket) do
     data = %{
       name: NameBuilder.build_name(params["circuit_number"]),

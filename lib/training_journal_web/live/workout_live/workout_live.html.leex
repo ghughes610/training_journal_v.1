@@ -21,7 +21,7 @@
      <%= for workout <- @workouts do %>
         <div class="shadow-lg bg-blue-500 w-64">
                 <div class= "flex items-center justify-between font-bold text-xl mb-5">
-                    <button phx-click="delete_workout" phx-value-id="<%= workout.id %>" class="m-5 p-2 max-w-sm rounded overflow-hidden shadow-lg bg-red-500">X</button>
+                    <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_delete_button(workout) %>
                     <%= live_patch workout.name,
                       to: Routes.live_path(
                       @socket,

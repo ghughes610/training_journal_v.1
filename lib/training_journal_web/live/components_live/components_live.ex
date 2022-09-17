@@ -157,4 +157,13 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
     </select>
     """
   end
+
+  def make_delete_button(struct) do
+    assigns = %{
+      struct: struct
+    }
+    ~L"""
+    <button phx-click="delete" phx-value-id="<%= @struct.id %>" class="m-5 p-2 max-w-sm rounded overflow-hidden shadow-lg bg-red-500">X</button>
+    """
+  end
 end

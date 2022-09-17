@@ -35,7 +35,7 @@ defmodule TrainingJournalWeb.WorkoutLive do
   end
 
   @impl true
-  def handle_event("delete_workout", %{"id" => id}, socket) do
+  def handle_event("delete", %{"id" => id}, socket) do
     workouts = get_workouts(socket)
     workout = Workouts.get_workout!(id)
 
