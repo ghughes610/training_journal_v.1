@@ -91,6 +91,7 @@ defmodule TrainingJournalWeb.WorkoutLive do
     day_of_week = Timex.now |> Timex.weekday |> Timex.day_shortname
     name = day_of_week<>"_"<>today<>"_"<>type_letters
     should_train = ShouldTrainCalculator.should_train(params["freshness"], params["days_on"])
+    
     data = %{
       name: name,
       type: params["type"],
@@ -106,10 +107,6 @@ defmodule TrainingJournalWeb.WorkoutLive do
         day_of_week: day_of_week
        }
     }
-
-    IO.puts("data below")
-    IO.inspect(data)
-
     with {:ok, new_workout} <- Workouts.create_workout(data) do
 
       workouts = get_workouts(socket)

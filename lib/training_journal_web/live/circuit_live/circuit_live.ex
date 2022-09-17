@@ -17,33 +17,24 @@ defmodule TrainingJournalWeb.CircuitLive do
     {:ok, socket}
   end
 
-  def handle_event(
-        "create_circuit",
-        %{"name" => name, "focus" => focus, "metadata" => metadata, "rest_time" => rest_time},
-        socket
-      ) do
+  # def handle_event("create_circuit", params, socket) do
 
-    metadata =
-      metadata
-      |> JSON.decode()
-      |> elem(1)
+  #   with {:ok, new_circuit} <-
+  #          Circuits.create_circuit(%{
+  #            name: name,
+  #            focus: focus,
+  #            completed: false,
+  #            metadata: metadata,
+  #            rest_time: "#{rest_time} minutes",
+  #            workout_id: socket.assigns.id
+  #          }) do
 
-    with {:ok, new_circuit} <-
-           Circuits.create_circuit(%{
-             name: name,
-             focus: focus,
-             completed: false,
-             metadata: metadata,
-             rest_time: "#{rest_time} minutes",
-             workout_id: socket.assigns.id
-           }) do
+  #     circuits = get_circuits(socket)
+  #     circuits = [new_circuit | circuits]
 
-      circuits = get_circuits(socket)
-      circuits = [new_circuit | circuits]
-
-      {:noreply, assign(socket, :circuits, circuits)}
-    end
-  end
+  #     {:noreply, assign(socket, :circuits, circuits)}
+  #   end
+  # end
 
   def get_circuits(socket) do
     socket.assigns.circuits
