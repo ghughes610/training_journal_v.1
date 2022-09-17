@@ -2,12 +2,9 @@ defmodule TrainingJournalWeb.CircuitLive do
   use TrainingJournalWeb, :live_view
 
   alias TrainingJournal.{
-    Circuits,
-    Repo
+    Builders.NameBuilder,
+    Circuits
   }
-  import Ecto.Query
-
-
 
   def mount(%{"id" => id}, _session, socket) do
     id = String.to_integer(id)
@@ -17,26 +14,30 @@ defmodule TrainingJournalWeb.CircuitLive do
     {:ok, socket}
   end
 
-  def handle_event(
-        "create_circuit",
-        %{"name" => name, "focus" => focus, "metadata" => metadata, "rest_time" => rest_time},
-        socket
-      ) do
+    def handle_event("delete", %{"id" => id}, socket) do
+    circuits = get_circuits(socket)
+    circuit = Circuits.get_circuit!(id)
 
-    metadata =
-      metadata
-      |> JSON.decode()
-      |> elem(1)
+    with {:ok, deleted_circuit} <- Circuits.delete_circuit(circuit) do
+      circuits = Enum.filter(circuits, fn circuit -> circuit.id != deleted_circuit.id end)
 
-    with {:ok, new_circuit} <-
-           Circuits.create_circuit(%{
-             name: name,
-             focus: focus,
-             completed: false,
-             metadata: metadata,
-             rest_time: rest_time,
-             workout_id: socket.assigns.id
-           }) do
+      {:noreply, assign(socket, :circuits, circuits)}
+    end
+  end
+
+  def handle_event("create_circuit", params, socket) do
+    data = %{
+      name: NameBuilder.build_name(params["circuit_number"]),
+      completed: false,
+      number_of_exercises: String.to_integer(params["number_of_exercises"]),
+      sets: String.to_integer(params["sets"]),
+      rest_time: params["rest_time"],
+      workout_id: socket.assigns.id,
+      metadata: %{},
+      circuit_number: String.to_integer(params["circuit_number"])
+    }
+
+    with {:ok, new_circuit} <- Circuits.create_circuit(data) do
 
       circuits = get_circuits(socket)
       circuits = [new_circuit | circuits]

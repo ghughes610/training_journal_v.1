@@ -1,23 +1,25 @@
 defmodule TrainingJournalWeb.WorkoutLive do
   use TrainingJournalWeb, :live_view
 
-  alias TrainingJournal.Workouts
+  alias TrainingJournal.{
+    Calculators.ShouldTrainCalculator,
+    Builders.NameBuilder,
+    Workouts
+  }
+
   @impl true
   def mount(_params, _session, socket) do
     workouts = Workouts.list_workouts()
-    workout = workouts |> Enum.random()
 
     socket =
       assign(socket,
-        workout: workout,
-        workouts: workouts,
-        unfinished_workouts: Enum.filter(workouts, fn workout -> workout.completed == false end),
-        editing: %{id: 14, name: "", type: "", metadata: %{}}
+        workouts: workouts
       )
 
     {:ok, socket}
   end
 
+  @impl true
   def handle_params(%{"id" => id}, _url, socket) do
     id = String.to_integer(id)
 
@@ -32,7 +34,8 @@ defmodule TrainingJournalWeb.WorkoutLive do
     {:noreply, socket}
   end
 
-  def handle_event("delete_workout", %{"id" => id}, socket) do
+  @impl true
+  def handle_event("delete", %{"id" => id}, socket) do
     workouts = get_workouts(socket)
     workout = Workouts.get_workout!(id)
 
@@ -43,6 +46,7 @@ defmodule TrainingJournalWeb.WorkoutLive do
     end
   end
 
+  @impl true
   def handle_event("expand_workout", %{"id" => id}, socket) do
     workout = Workouts.get_workout!(id)
 
@@ -81,36 +85,26 @@ defmodule TrainingJournalWeb.WorkoutLive do
     {:noreply, assign(socket, :editing, editing)}
   end
 
-  def handle_event(
-        "create_workout",
-        %{
-        "name" => name,
-        "type" => type,
-        "metadata" => metadata
-        # "freshness" => freshness,
-        # "days_on" => days_on
-        },
-        socket
-      ) do
+  def handle_event("create_workout", params, socket) do
 
-    metadata_attrs =
-      %{}
-      # |> Map.put("freshness", freshness)
-      # |> Map.put("days_on", days_on)
+    data = %{
+      name: NameBuilder.build_name(params["type"]),
+      type: params["type"],
+      finger_training: params["finger_training"] || false,
+      cross_training: params["cross_training"] || true,
+      completed: false,
+      metadata: %{
+        notes: params["notes"],
+        should_train: ShouldTrainCalculator.should_train(params["freshness"], params["days_on"]),
+        freshness: params["freshness"],
+        days_on: params["days_on"],
+        body_weight: params["body_weight"],
+        day_of_week: Timex.now |> Timex.weekday |> Timex.day_shortname
+       }
+    }
 
+    with {:ok, new_workout} <- Workouts.create_workout(data) do
 
-      # build_workout_metadata(metadata_attrs)
-
-    with {:ok, new_workout} <-
-           Workouts.create_workout(%{
-             name: name,
-             completed: false,
-             finger_training: true,
-             cross_training: false,
-             date: Timex.now(),
-             type: type,
-             metadata: metadata_attrs
-           }) do
       workouts = get_workouts(socket)
       workouts = [new_workout | workouts]
 
@@ -118,7 +112,7 @@ defmodule TrainingJournalWeb.WorkoutLive do
     end
   end
 
-  defp update_workout(workouts, new_workout) do
+  def update_workout(workouts, new_workout) do
     Enum.map(workouts, fn workout ->
       if workout.id == new_workout.id do
         new_workout
@@ -132,18 +126,4 @@ defmodule TrainingJournalWeb.WorkoutLive do
     socket.assigns.workouts
   end
 
-  defp build_workout_metadata(metadata_attrs) do
-    freshness = String.to_integer(metadata_attrs["freshness"])
-
-    should_train =
-      cond do
-        freshness >= 8 -> "Yes"
-        freshness < 7 && freshness >= 6 -> "Maybe"
-        freshness -> "No"
-      end
-
-    metadata_attrs
-    |> Map.put("should_train", should_train)
-
-  end
 end

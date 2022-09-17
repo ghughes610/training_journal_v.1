@@ -4,11 +4,12 @@ defmodule TrainingJournal.Circuits.Circuit do
 
   schema "circuits" do
     field :completed, :boolean, default: false
-    field :focus, :string
+    field :number_of_exercises, :integer, default: 3
     field :metadata, :map, default: %{}
     field :name, :string
-    field :rest_time, :string, default: "90 seconds"
+    field :rest_time, :string, default: "2 minutes"
     field :workout_id, :id
+    field :sets, :integer, default: 3
 
     timestamps()
   end
@@ -16,7 +17,7 @@ defmodule TrainingJournal.Circuits.Circuit do
   @doc false
   def changeset(circuit, attrs) do
     circuit
-    |> cast(attrs, [:name, :focus, :completed, :rest_time, :metadata, :workout_id])
-    |> validate_required([:name, :focus, :completed, :rest_time, :metadata])
+    |> cast(attrs, [:name, :number_of_exercises, :completed, :rest_time, :metadata, :workout_id, :sets])
+    |> validate_required([:name, :number_of_exercises, :completed, :rest_time, :metadata, :sets])
   end
 end
