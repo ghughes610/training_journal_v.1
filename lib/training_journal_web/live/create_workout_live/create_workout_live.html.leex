@@ -13,5 +13,7 @@
   </div>
 
 <div class="text-white">
-    Create Workout Live
+  <%= for w <- @todays_workouts do %>
+    <div><%= w.name %></div>
+  <% end %>
 </div>

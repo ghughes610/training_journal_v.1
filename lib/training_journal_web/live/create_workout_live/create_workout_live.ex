@@ -9,7 +9,8 @@ defmodule TrainingJournalWeb.CreateWorkoutLive do
 
   @impl true
   def mount(_params, _session, socket) do
-    socket = assign(socket, workouts: [])
+    todays_workouts = Workouts.list_workouts_day(Timex.now())
+    socket = assign(socket, todays_workouts: todays_workouts)
 
     {:ok, socket}
   end
