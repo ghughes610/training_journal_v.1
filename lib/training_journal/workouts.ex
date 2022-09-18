@@ -1,9 +1,6 @@
 defmodule TrainingJournal.Workouts do
-  @moduledoc """
-  The Workouts context.
-  """
-
   import Ecto.Query, warn: false
+
   alias TrainingJournal.Repo
 
   alias TrainingJournal.Workouts.Workout
@@ -11,6 +8,11 @@ defmodule TrainingJournal.Workouts do
   def list_workouts do
     query = from w in Workout, order_by: [desc: w.inserted_at]
     Repo.all(query)
+  end
+
+  def list_weeks_workouts(start_date, end_date) do
+    workouts = list_workouts()
+    Enum.filter(workouts, &(Timex.between?(&1.inserted_at, Timex.parse!(start_date, "{YYYY}-{0M}-{D}"), Timex.parse!(end_date, "{YYYY}-{0M}-{D}"))))
   end
 
   def get_workout!(id), do: Repo.get!(Workout, id)
