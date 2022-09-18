@@ -1,4 +1,4 @@
-defmodule TrainingJournalWeb.Live.CreateWorkoutLive.CreateWorkoutLive do
+defmodule TrainingJournalWeb.CreateWorkoutLive do
   use TrainingJournalWeb, :live_view
 
   alias TrainingJournal.{
@@ -9,7 +9,6 @@ defmodule TrainingJournalWeb.Live.CreateWorkoutLive.CreateWorkoutLive do
 
   @impl true
   def mount(_params, _session, socket) do
-    
     socket = assign(socket, workouts: [])
 
     {:ok, socket}

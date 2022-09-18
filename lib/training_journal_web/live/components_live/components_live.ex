@@ -40,26 +40,22 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
     assigns = %{selected_workout: selected_workout}
 
     ~L"""
-    <div class="card">
-      <div class="body">
-        <div class="row">
-          <div class="deploys">
-            <span>
-              Fingers: <%= @selected_workout.finger_training %>
-            </span>
-          </div>
-          <span>
-            Cross Training: <%= @selected_workout.cross_training %>
-          </span>
-        </div>
-        <blockquote>
-          Completed: <%= @selected_workout.completed %>
-        </blockquote>
+    <div>
+      <div>
         <blockquote>
           Cross Training: <%= @selected_workout.cross_training %>
         </blockquote>
         <blockquote>
           Finger Training: <%= @selected_workout.finger_training %>
+        </blockquote>
+        <blockquote>
+          Days On: <%= @selected_workout.metadata["days_on"] %>
+        </blockquote>
+        <blockquote>
+          Freshness: <%= @selected_workout.metadata["freshness"] %>/10
+        </blockquote>
+        <blockquote>
+          Should Train: <%= @selected_workout.metadata["should_train"] %>
         </blockquote>
       </div>
     </div>
@@ -169,7 +165,7 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
 
   def make_expand_button(struct) do
     assigns = %{ struct: struct }
-    
+
     ~L"""
     <button phx-click="expand" phx-value-id="<%= @struct.id %>" class="m-5 p-2 max-w-sm rounded overflow-hidden shadow-lg bg-red-500">+</button>
     """
