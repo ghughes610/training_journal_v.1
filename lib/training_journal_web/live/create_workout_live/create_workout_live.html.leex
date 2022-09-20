@@ -1,23 +1,40 @@
-  <div class="place-content-center w-1/3">
-    <form phx-submit="create_workout" class="flex flex-col mt-5" >
-      <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_select_menu("type", "Type", ["General", "Power", "Endurance", "Power Endurance"]) %>
-      <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_slider("freshness") %>
-      <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_custom_slider("days_on", "Days On") %>
-      <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("finger_training", "Finger Training") %>
-      <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("cross_training", "Cross Training") %>
-      <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_number_input("body_weight", "Body Weight", 165, 180, 170) %>
-      <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_text_input("notes") %>
 
-      <button class="m-1 text-white text-sm leading-6 font-medium py-2 px-3 rounded-lg bg-green-700 hover:bg-green-500" type="submit">create workout</button>
-    </form>
+  <div class="flex justify-center">
+    <div>
+      <form phx-submit="create_workout" class="flex flex-col" >
+        <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_select_menu("type", "Type", ["General", "Power", "Endurance", "Power Endurance"]) %>
+        <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_slider("freshness") %>
+        <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_custom_slider("days_on", "Days On") %>
+        <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("finger_training", "Finger Training") %>
+        <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("cross_training", "Cross Training") %>
+        <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_number_input("body_weight", "Body Weight", 165, 180, 170) %>
+        <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_text_input("notes") %>
+        <button class="m-1 text-white text-sm leading-6 font-medium py-2 px-3 rounded-lg bg-green-700 hover:bg-green-500" type="submit">create workout</button>
+      </form>
+    </div>
   </div>
 
-<div class="mt-10 text-white">
-  <div class="mt-10 text-white">This weeks workouts</div>
-  <div>
-      <%= for w <- @weeks_workouts do %>
-      <div><%= w.name %></div>
-      <% end %>
+
+    <hr class="my-5 w-screen">
+
+  <div class="flex flex-col">
+
+    <div class="flex my-2 justify-center">
+      <h2 class="text-white font-bold">This weeks workouts</h2>
+    </div>
+
+      <div class="flex justify-center">
+        <%= for w <- @weeks_workouts do %>
+        <div class="flex flex-col items-center font-bold w-1/3 my-2 text-gray-500">
+          <%= live_patch w.name,
+                  to: Routes.live_path(
+                  @socket,
+                  TrainingJournalWeb.CircuitLive,
+                  id: w.id
+                ) %>
+          <% end %>
+        </div>
+    </div>
   </div>
 
 </div>

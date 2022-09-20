@@ -88,7 +88,7 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
     }
     if display_name == nil do
       ~L"""
-      <label for="<%= @field %>"><%= @field %></label>
+      <label for="<%= @field %>" class="block mb-2 text-base font-medium text-gray-900 dark:text-gray-400"><%= @field %></label>
       <input type="number" id="<%= @field %>"
         placeholder="<%= String.capitalize(@field) %>"
         name="<%= @field %>"
@@ -100,7 +100,7 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
       """
     else
       ~L"""
-      <label for="<%= @field %>"><%= @display_name %></label>
+      <label for="<%= @field %>" class="block mb-2 text-base font-medium text-gray-900 dark:text-gray-400"><%= @display_name %></label>
       <input
         id="<%= @field %>"
         type="number"

@@ -15,12 +15,12 @@ defmodule TrainingJournal.Calculators.ExerciseCalculator do
       true -> "band"
       false -> heavy_or_light(String.to_integer(data.weight))
     end
-    
+
 IO.inspect(data)
 
     cond do
-      data.fingers -> "Block Pull (Over Head)"
-      data.fingers && data.isometric -> "Block Pull (Over Head)"
+      data.fingers -> IO.puts("Block Pull (Over Head)")
+      data.fingers && data.isometric -> IO.puts("Block Pull (Over Head) 2")
       data.fingers && data.dynamic -> "Block Pull (Row)"
 
       #overhead
