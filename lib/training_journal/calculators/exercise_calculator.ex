@@ -15,7 +15,9 @@ defmodule TrainingJournal.Calculators.ExerciseCalculator do
       true -> "band"
       false -> heavy_or_light(String.to_integer(data.weight))
     end
+    
 IO.inspect(data)
+
     cond do
       data.fingers -> "Block Pull (Over Head)"
       data.fingers && data.isometric -> "Block Pull (Over Head)"

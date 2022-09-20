@@ -12,8 +12,12 @@
     </form>
   </div>
 
-<div class="text-white">
-  <%= for w <- @todays_workouts do %>
-    <div><%= w.name %></div>
-  <% end %>
+<div class="mt-10 text-white">
+  <div class="mt-10 text-white">This weeks workouts</div>
+  <div>
+      <%= for w <- @weeks_workouts do %>
+      <div><%= w.name %></div>
+      <% end %>
+  </div>
+
 </div>

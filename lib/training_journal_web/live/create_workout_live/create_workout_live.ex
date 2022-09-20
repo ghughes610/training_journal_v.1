@@ -9,8 +9,8 @@ defmodule TrainingJournalWeb.CreateWorkoutLive do
 
   @impl true
   def mount(_params, _session, socket) do
-    todays_workouts = Workouts.list_workouts_day(Timex.now())
-    socket = assign(socket, todays_workouts: todays_workouts)
+    weeks_workouts = Workouts.list_workouts_week(Timex.now())
+    socket = assign(socket, weeks_workouts: weeks_workouts)
 
     {:ok, socket}
   end
@@ -39,11 +39,14 @@ defmodule TrainingJournalWeb.CreateWorkoutLive do
       workouts = get_workouts(socket)
       workouts = [new_workout | workouts]
 
-      {:noreply, assign(socket, :workouts, workouts)}
+
+      socket = assign(socket, weeks_workouts: workouts)
+
+      {:noreply, socket}
     end
   end
 
   def get_workouts(socket) do
-    socket.assigns.workouts
+    socket.assigns.weeks_workouts
   end
 end
