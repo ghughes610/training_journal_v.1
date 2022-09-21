@@ -1,6 +1,4 @@
-format metadata method and stop passing in the block of metadata pass in parts of it and construct the map 
-
-add button to increment the sets 
-
-
-
+make card link on create_workouts page go to a for which just shows the circuits with this workout id
+take the id from the workout and search for circuits
+preload all the circuits exercises 
+display with tree  
