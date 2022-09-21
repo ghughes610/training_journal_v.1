@@ -8,7 +8,7 @@ defmodule TrainingJournal.Circuits.Circuit do
     field :metadata, :map, default: %{}
     field :name, :string
     field :rest_time, :string, default: "2 minutes"
-    field :workout_id, :id
+    field :workout_id, :id 
     field :sets, :integer, default: 3
 
     timestamps()

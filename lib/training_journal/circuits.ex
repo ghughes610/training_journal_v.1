@@ -8,6 +8,8 @@ defmodule TrainingJournal.Circuits do
 
   def get_circuit!(id), do: Repo.get!(Circuit, id)
 
+  def get_full_circuit(id), do: Repo.get!(Circuit, id) |> Repo.preload([:workouts])
+
   def list_circuits, do: Repo.all(from c in Circuit, order_by: [desc: c.inserted_at])
 
   def list_circuits_day(day), do: Enum.filter(list_circuits(), &(Timex.between?(&1.inserted_at, Timex.beginning_of_day(day), Timex.end_of_day(day))))
