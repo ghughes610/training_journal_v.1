@@ -30,7 +30,7 @@
 
 
 
-<div x-data="{ open: false }" class="relative text-left">
+<!-- <div x-data="{ open: false }" class="relative text-left">
   <button
     @click="open = !open"
     @keydown.escape.window="open = false"
@@ -57,6 +57,14 @@
     <a class="flex items-center h-8 px-3 text-sm hover:bg-gray-200" href="#">Support</a>
     <a class="flex items-center h-8 px-3 text-sm hover:bg-gray-200" href="#">Sign Out</a>
   </div>
+</div> -->
+
+
+
+
+<div x-data="{open: false}" class="m-4">
+  <div x-show="open">show this</div>
+  <button x-on:click="open = !open">button</button>
 </div>
 
 </div>
