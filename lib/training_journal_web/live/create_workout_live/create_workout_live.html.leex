@@ -28,10 +28,10 @@
         <div class="flex justify-between">
           <%= for w <- @weeks_workouts do %>
             <div class="w-60 m-2 p-2 bg-white rounded-xl transform transition-all hover:-translate-y-2 duration-300 shadow-lg hover:shadow-2xl">
-              <img class="h-40 object-cover rounded-xl" h-40 object-cover rounded-xl" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" alt="">
+              <img class="h-40 object-cover rounded-xl" h-40 object-cover rounded-xl" src="https://thumbs.dreamstime.com/b/kettlebell-icon-comic-style-barbell-sport-equipment-cartoon-vector-illustration-white-isolated-background-dumbbell-splash-181354706.jpg" alt="">
               <div class="p-2">
               <h2 class="font-bold text-lg mb-2"><%= w.name %></h2>
-              <p class="text-sm text-gray-600">Simple Yet Beautiful Card Design with TaiwlindCss. Subscribe to our Youtube channel for more ...</p>
+              <p class="text-sm text-gray-600">generate some discription field or use the notes that can be put on the workout</p>
               <%= live_patch "See Workout",
                     to: Routes.live_path(
                     @socket,
