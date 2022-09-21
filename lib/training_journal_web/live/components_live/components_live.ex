@@ -40,26 +40,22 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
     assigns = %{selected_workout: selected_workout}
 
     ~L"""
-    <div class="card">
-      <div class="body">
-        <div class="row">
-          <div class="deploys">
-            <span>
-              Fingers: <%= @selected_workout.finger_training %>
-            </span>
-          </div>
-          <span>
-            Cross Training: <%= @selected_workout.cross_training %>
-          </span>
-        </div>
-        <blockquote>
-          Completed: <%= @selected_workout.completed %>
-        </blockquote>
+    <div>
+      <div>
         <blockquote>
           Cross Training: <%= @selected_workout.cross_training %>
         </blockquote>
         <blockquote>
           Finger Training: <%= @selected_workout.finger_training %>
+        </blockquote>
+        <blockquote>
+          Days On: <%= @selected_workout.metadata["days_on"] %>
+        </blockquote>
+        <blockquote>
+          Freshness: <%= @selected_workout.metadata["freshness"] %>/10
+        </blockquote>
+        <blockquote>
+          Should Train: <%= @selected_workout.metadata["should_train"] %>
         </blockquote>
       </div>
     </div>
@@ -92,7 +88,7 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
     }
     if display_name == nil do
       ~L"""
-      <label for="<%= @field %>"><%= @field %></label>
+      <label for="<%= @field %>" class="block mb-2 text-base font-medium text-gray-900 dark:text-gray-400"><%= @field %></label>
       <input type="number" id="<%= @field %>"
         placeholder="<%= String.capitalize(@field) %>"
         name="<%= @field %>"
@@ -104,7 +100,7 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
       """
     else
       ~L"""
-      <label for="<%= @field %>"><%= @display_name %></label>
+      <label for="<%= @field %>" class="block mb-2 text-base font-medium text-gray-900 dark:text-gray-400"><%= @display_name %></label>
       <input
         id="<%= @field %>"
         type="number"
@@ -169,9 +165,23 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
 
   def make_expand_button(struct) do
     assigns = %{ struct: struct }
-    
+
     ~L"""
     <button phx-click="expand" phx-value-id="<%= @struct.id %>" class="m-5 p-2 max-w-sm rounded overflow-hidden shadow-lg bg-red-500">+</button>
+    """
+  end
+
+  def make_card(item) do
+    assigns = %{item: item}
+
+    ~L"""
+    <div class="w-60 m-2 p-2 bg-white rounded-xl transform transition-all hover:-translate-y-2 duration-300 shadow-lg hover:shadow-2xl">
+      <img class="h-40 object-cover rounded-xl" h-40 object-cover rounded-xl" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" alt="">
+      <div class="p-2">
+        <h2 class="font-bold text-lg mb-2"><%= @item.name %></h2>
+        <p class="text-sm text-gray-600">Simple Yet Beautiful Card Design with TaiwlindCss. Subscribe to our Youtube channel for more ...</p>
+      </div>
+    </div>
     """
   end
 end

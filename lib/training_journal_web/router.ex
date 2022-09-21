@@ -19,6 +19,7 @@ defmodule TrainingJournalWeb.Router do
 
     live "/", IndexLive
     live "/workouts", WorkoutLive
+    live "/create_workout", CreateWorkoutLive
     live "/workout/circuit", CircuitLive
     live "/chart", ChartLive
     live "/exercises", ExerciseLive

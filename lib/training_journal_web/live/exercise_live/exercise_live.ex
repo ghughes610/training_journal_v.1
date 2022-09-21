@@ -2,6 +2,7 @@ defmodule TrainingJournalWeb.ExerciseLive do
   use TrainingJournalWeb, :live_view
 
   alias TrainingJournal.{
+    Calculators.ExerciseCalculator,
     Exercises
   }
 
@@ -17,9 +18,7 @@ defmodule TrainingJournalWeb.ExerciseLive do
 
   @impl true
    def handle_event("create_exercise", params, socket) do
-
     data = %{
-      name: "make this with conditionals",
       reps: String.to_integer(params["reps"]),
       weight: params["weight"],
       push: params["push"] || false,
@@ -28,9 +27,15 @@ defmodule TrainingJournalWeb.ExerciseLive do
       isometric: params["isometric"] || false,
       over_head: params["over_head"] || false,
       fingers: params["fingers"] || false,
-      circuit_id: socket.assigns.id,
-      metadata: %{}
     }
+
+    name = ExerciseCalculator.calculate_exercise(params)
+    
+    data =
+      data
+      |> Map.put(:name, name)
+      |> Map.put(:circuit_id, socket.assigns.id)
+      |> Map.put(:metadata, %{})
 
     with {:ok, new_exercise} <- Exercises.create_exercise(data) do
 
