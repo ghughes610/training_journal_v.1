@@ -7,4 +7,8 @@ defmodule TrainingJournal.Repo.Migrations.RemoveDateFromWorkouts do
     end
   end
 
+  def down do
+    drop table("workouts")
+  end
+
 end

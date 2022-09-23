@@ -11,4 +11,8 @@ defmodule TrainingJournal.Repo.Migrations.AddDataToExercises do
       add :fingers, :boolean
     end
   end
+
+  def down do
+    drop table("exercises")
+  end
 end

@@ -2,6 +2,7 @@ defmodule TrainingJournal.Workouts.Workout do
   use Ecto.Schema
   import Ecto.Changeset
 
+
   schema "workouts" do
     field :completed, :boolean, default: false
     field :cross_training, :boolean, default: false
@@ -9,6 +10,8 @@ defmodule TrainingJournal.Workouts.Workout do
     field :name, :string
     field :type, :string
     field :metadata, :map
+
+    has_many :circuits, TrainingJournal.Circuits.Circuit
 
     timestamps()
   end

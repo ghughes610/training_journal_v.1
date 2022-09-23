@@ -1,5 +1,5 @@
 defmodule TrainingJournal.Workouts do
-  import Ecto.Query, warn: false
+  import Ecto.Query
 
   alias TrainingJournal.{
     Repo,
@@ -7,6 +7,8 @@ defmodule TrainingJournal.Workouts do
   }
 
   def get_workout!(id), do: Repo.get!(Workout, id)
+
+  def get_full_workout(id), do: get_workout!(id) |> preload([:circuits])
 
   def list_workouts, do: Repo.all(from w in Workout, order_by: [desc: w.inserted_at])
 

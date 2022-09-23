@@ -6,4 +6,8 @@ defmodule TrainingJournal.Repo.Migrations.RemoveSetsFromExercises do
       remove :sets
     end
   end
+
+  def down do
+    drop table("exercises")
+  end
 end

@@ -14,4 +14,8 @@ defmodule TrainingJournal.Repo.Migrations.CreateExercises do
     end
     create index(:exercises, [:circuit_id])
   end
+
+  def down do
+    remove :circuit_id
+  end
 end
