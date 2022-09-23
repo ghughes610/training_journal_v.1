@@ -3,7 +3,8 @@ defmodule TrainingJournal.Workouts do
 
   alias TrainingJournal.{
     Repo,
-    Workouts.Workout
+    Workouts.Workout,
+    Circuits.Circuit
   }
 
   def get_workout!(id), do: Repo.get!(Workout, id)
@@ -17,6 +18,12 @@ defmodule TrainingJournal.Workouts do
   def list_workouts_week(day), do: Enum.filter(list_workouts(), &(Timex.between?(&1.inserted_at, Timex.beginning_of_week(day), Timex.end_of_week(day))))
 
   def list_workouts_month(month), do: Enum.filter(list_workouts(), &(Timex.between?(&1.inserted_at, Timex.beginning_of_month(month), Timex.end_of_month(month))))
+
+  def get_circuits_for_workout(id) do
+    Circuit
+    |> where(workout_id: ^id)
+    |> Repo.all()
+  end
 
   def create_workout(attrs \\ %{}) do
     %Workout{}

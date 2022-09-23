@@ -8,10 +8,9 @@ defmodule TrainingJournal.Circuits.Circuit do
     field :metadata, :map, default: %{}
     field :name, :string
     field :rest_time, :string, default: "2 minutes"
-    field :workout_id, :id
     field :sets, :integer, default: 3
 
-    belongs_to :workouts, TrainingJournal.Workouts.Workout
+    belongs_to :workout, TrainingJournal.Workouts.Workout
     # has_many :exercise,  TrainingJournal.Exercises.Exercise
 
 
