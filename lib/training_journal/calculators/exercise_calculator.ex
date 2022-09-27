@@ -1,8 +1,8 @@
 defmodule TrainingJournal.Calculators.ExerciseCalculator do
   @general_exercises [
-    "Kettlebell Squat Double Bell",
+    "Kettlebell Squat",
     "Kettlebell SLDL",
-    "Deadlift",
+    "Explosive Deadlift",
     "Solider Swings",
     "Side Swings",
     "Reverse Fly",
@@ -45,7 +45,7 @@ defmodule TrainingJournal.Calculators.ExerciseCalculator do
   ]
 
   def calculate_exercise(params) do
-    IO.inspect(params)
+
     data = %{
       weight: params["weight"],
       push: params["push"],
@@ -66,7 +66,9 @@ defmodule TrainingJournal.Calculators.ExerciseCalculator do
           !is_nil(data.isometric) && !is_nil(data.push) -> "Box Squeeze Squats"
           !is_nil(data.push) && !is_nil(data.over_head) -> "Lunge Press"
           !is_nil(data.push) && !is_nil(data.pull) -> "Turkish Get Ups"
+          !is_nil(data.pull) && !is_nil(data.over_head) -> "Lat Pull Downs"
           !is_nil(data.pull) -> "Single Arm Row"
+          !is_nil(data.push) -> "Turkish Get Ups"
           data.weight == "" -> Enum.random(@trx_exercises)
           !is_nil(data.weight) -> Enum.random(@general_exercises)
         end
@@ -84,5 +86,15 @@ defmodule TrainingJournal.Calculators.ExerciseCalculator do
         end
     end
 
+
+  end
+
+  def calculate_exercise_reps(weight) do
+    cond do
+      weight > 0 && weight <= 30 -> 12
+      weight <= 54 -> 8
+      weight <= 70 -> 6
+      true -> 3
+    end
   end
 end

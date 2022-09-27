@@ -3,7 +3,6 @@ defmodule TrainingJournalWeb.ExerciseLive do
 
   alias TrainingJournal.{
     Calculators.ExerciseCalculator,
-    Calculators.WeightCalculator,
     Exercises
   }
 
@@ -27,7 +26,7 @@ defmodule TrainingJournalWeb.ExerciseLive do
     end
 
     data = %{
-      reps: String.to_integer(params["reps"]),
+      reps: ExerciseCalculator.calculate_exercise_reps(weight),
       weight: weight,
       push: params["push"] || false,
       pull: params["pull"] || false,
