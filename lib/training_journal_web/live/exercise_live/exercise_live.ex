@@ -17,7 +17,7 @@ defmodule TrainingJournalWeb.ExerciseLive do
   end
 
   @impl true
-   def handle_event("create_exercise", params, socket) do
+   def handle_event("generate_exercise", params, socket) do
 
     weight = if params["weight"] == "" do
       0
