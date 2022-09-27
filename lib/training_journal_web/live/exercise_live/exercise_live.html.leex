@@ -20,7 +20,11 @@
                 <div class="font-bold w-1/3">
                         <%= exercise.name %>
                         reps: <%= exercise.reps %>
-                        weight: <%= exercise.weight %>
+                        weight: <%= if exercise.weight == 0 do %>
+                                        TRX
+                                <% else %>
+                                        <%= exercise.weight %>
+                                <% end %>
                 </div>
                 <% end %>
         </div>

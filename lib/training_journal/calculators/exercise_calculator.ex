@@ -45,6 +45,7 @@ defmodule TrainingJournal.Calculators.ExerciseCalculator do
   ]
 
   def calculate_exercise(params) do
+    IO.inspect(params)
     data = %{
       weight: params["weight"],
       push: params["push"],
@@ -66,8 +67,8 @@ defmodule TrainingJournal.Calculators.ExerciseCalculator do
           !is_nil(data.push) && !is_nil(data.over_head) -> "Lunge Press"
           !is_nil(data.push) && !is_nil(data.pull) -> "Turkish Get Ups"
           !is_nil(data.pull) -> "Single Arm Row"
+          data.weight == "" -> Enum.random(@trx_exercises)
           !is_nil(data.weight) -> Enum.random(@general_exercises)
-          true -> Enum.random(@trx_exercises)
         end
       else
         cond do
