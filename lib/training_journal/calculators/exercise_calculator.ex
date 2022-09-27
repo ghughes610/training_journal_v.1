@@ -1,4 +1,48 @@
 defmodule TrainingJournal.Calculators.ExerciseCalculator do
+  @general_exercises [
+    "Kettlebell Squat Double Bell",
+    "Kettlebell SLDL",
+    "Deadlift",
+    "Solider Swings",
+    "Side Swings",
+    "Reverse Fly",
+    "Chest Fly",
+    "Reverse Curls",
+    "Tri Extension",
+    "Side Raises"
+  ]
+
+  @trx_exercises [
+    "TRX Push Ups",
+    "TRX Chest Fly",
+    "TRX Saw",
+    "TRX Tri Ext",
+    "TRX Single Leg Squat",
+    "TRX Rows",
+    "TRX Pike Ups",
+    "TRX I, Y, T"
+  ]
+
+  @heavy_finger_exercises [
+    "Max Hangs for Reps",
+    "Max Hangs 10:90",
+    "Tension Repeaters 6:10",
+    "Block Pulls 120"
+  ]
+
+  @medium_finger_exercises [
+    "Hangs for Reps",
+    "Repeaters 10:7",
+    "Finger Curls",
+    "Block Pulls 120"
+  ]
+
+  @light_finger_exercises [
+    "Repeaters 10:7",
+    "Finger Curls",
+    "Variety Repeaters 10:7",
+    "One Arm Hangs"
+  ]
 
   def calculate_exercise(params) do
     data = %{
@@ -11,41 +55,33 @@ defmodule TrainingJournal.Calculators.ExerciseCalculator do
       fingers: params["fingers"],
     }
 
-    weight_or_band = case String.match?(data.weight, ~r/^[[:alpha:]]+$/) do
-      true -> "band"
-      false -> heavy_or_light(String.to_integer(data.weight))
-    end
-
-IO.inspect(data)
-
-    cond do
-      data.fingers -> IO.puts("Block Pull (Over Head)")
-      data.fingers && data.isometric -> IO.puts("Block Pull (Over Head) 2")
-      data.fingers && data.dynamic -> "Block Pull (Row)"
-
-      #overhead
-      data.fingers && data.pull && data.dynamic && data.over_head && weight_or_band != "band" -> "Finger Curls (Over Head - 20 mm)"
-      data.fingers && data.pull && data.dynamic && weight_or_band != "band" -> "Finger Curls (Over Head - 20 mm)"
-      data.fingers && data.pull && data.dynamic && weight_or_band != "band" -> "Finger Curls (Row - 20 mm)"
-      data.fingers && data.pull && data.over_head && weight_or_band != "band"  -> "Block Pull (Over Head)"
-      data.fingers && data.pull && data.isometric && data.over_head && weight_or_band != "band" -> "Repeaters 1"
-
-      #row
-      data.fingers && data.pull && data.dynamic && weight_or_band == "heavy" -> "3 Second Hangs"
-      data.fingers && data.pull && data.isometric && weight_or_band == "light" || weight_or_band == "medium" -> "Block Pull (Sitting Row)"
-      data.fingers && data.over_head || weight_or_band == "light" || weight_or_band == "medium" -> "Repeaters 2"
-      data.fingers && data.over_head || weight_or_band == "light" || weight_or_band == "medium" -> "Repeaters 3"
+    if data.fingers == nil do
+        cond do
+          !is_nil(data.isometric) && !is_nil(data.pull) && !is_nil(data.over_head) -> "One Arm Pull"
+          !is_nil(data.dynamic) && !is_nil(data.pull) && !is_nil(data.over_head) -> "One Arm Pull"
+          !is_nil(data.push) && !is_nil(data.pull) && !is_nil(data.over_head) -> "Snatches"
+          !is_nil(data.dynamic) && !is_nil(data.push) && !is_nil(data.over_head) -> "Swing Press"
+          !is_nil(data.dynamic) && !is_nil(data.push) -> "Floor Chest Press"
+          !is_nil(data.isometric) && !is_nil(data.push) -> "Box Squeeze Squats"
+          !is_nil(data.push) && !is_nil(data.over_head) -> "Lunge Press"
+          !is_nil(data.push) && !is_nil(data.pull) -> "Turkish Get Ups"
+          !is_nil(data.pull) -> "Single Arm Row"
+          !is_nil(data.weight) -> Enum.random(@general_exercises)
+          true -> Enum.random(@trx_exercises)
+        end
+      else
+        cond do
+          !is_nil(data.dynamic) && !is_nil(data.over_head) && !is_nil(data.isometric) -> "Velocity Pull"
+          !is_nil(data.isometric) && !is_nil(data.over_head) && data.weight == 0 -> "Endurance Hangs"
+          !is_nil(data.isometric) && !is_nil(data.over_head) && data.weight <= 30 -> Enum.random(@light_finger_exercises)
+          !is_nil(data.isometric) && !is_nil(data.over_head) && data.weight <= 50 -> Enum.random(@medium_finger_exercises)
+          !is_nil(data.isometric) && !is_nil(data.over_head) && data.weight >= 70 -> Enum.random(@heavy_finger_exercises)
+          !is_nil(data.over_head) && !is_nil(data.isometric) -> "2 Finger Pocket Pulls"
+          !is_nil(data.isometric) -> "One Arm Row"
+          !is_nil(data.dynamic) -> "One Arm Pull"
+          true -> "Finger Pulls"
+        end
     end
 
   end
-
-  def heavy_or_light(lb) do
-    cond do
-      lb >= 1 && lb <= 30 -> "light"
-      lb >= 31 && lb <= 50 -> "medium"
-      lb >= 51 && lb <= 70 -> "heavy"
-      true -> "extra heavy"
-    end
-  end
-
 end

@@ -1,6 +1,6 @@
 defmodule TrainingJournal.Exercises do
   import Ecto.Query, warn: false
-  
+
   alias TrainingJournal.{
     Exercises.Exercise,
     Repo

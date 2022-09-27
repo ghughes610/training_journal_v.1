@@ -5,7 +5,7 @@ defmodule TrainingJournal.Exercises.Exercise do
   schema "exercises" do
     field :name, :string
     field :reps, :integer
-    field :weight, :string
+    field :weight, :integer
     field :metadata, :map, default: %{}
     field :circuit_id, :id
     field :push, :boolean, default: true

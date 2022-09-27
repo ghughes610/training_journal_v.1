@@ -3,6 +3,7 @@ defmodule TrainingJournalWeb.ExerciseLive do
 
   alias TrainingJournal.{
     Calculators.ExerciseCalculator,
+    Calculators.WeightCalculator,
     Exercises
   }
 
@@ -18,9 +19,16 @@ defmodule TrainingJournalWeb.ExerciseLive do
 
   @impl true
    def handle_event("create_exercise", params, socket) do
+    
+    weight = if params["weight"] == "" do
+      0
+    else
+      String.to_integer(params["weight"])
+    end
+
     data = %{
       reps: String.to_integer(params["reps"]),
-      weight: params["weight"],
+      weight: weight,
       push: params["push"] || false,
       pull: params["pull"] || false,
       dynamic: params["dynamic"] || false,
@@ -29,8 +37,9 @@ defmodule TrainingJournalWeb.ExerciseLive do
       fingers: params["fingers"] || false,
     }
 
+
     name = ExerciseCalculator.calculate_exercise(params)
-    
+
     data =
       data
       |> Map.put(:name, name)
@@ -48,6 +57,15 @@ defmodule TrainingJournalWeb.ExerciseLive do
 
   def get_exercises(socket) do
     socket.assigns.exercises
+  end
+
+   def heavy_or_light(lb) do
+    cond do
+      lb >= 1 && lb <= 30 -> "light"
+      lb >= 31 && lb <= 50 -> "medium"
+      lb >= 51 && lb <= 70 -> "heavy"
+      true -> "extra heavy"
+    end
   end
 
 end
