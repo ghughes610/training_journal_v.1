@@ -1,34 +1,37 @@
 <div class="bg-zinc-800">
-        <div>
-                <div class="flex place-content-center" x-data="{open: false}">
-                <div x-show="open" class=" flex flex-col m-5 pb-3 font-bold">
-                        <form phx-submit="create_exercise" class="flex flex-col" >
-                                <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_text_input("weight") %>
-                                <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("push") %>
-                                <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("pull") %>
-                                <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("over_head") %>
-                                <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("dynamic") %>
-                                <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("isometric") %>
-                                <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("fingers") %>
-                                <button class="bg-indigo-600 text-white text-sm leading-6 font-medium py-2 px-3 rounded-lg bg-green-700 hover:bg-green-500" type="submit">Create Exercise</button>
-                        </form>
-                </div>
-                <button class="mr-4" x-on:click="open = !open">+</button>
-                <div>
+        <div class="flex place-content-center">
+                <div class="flex flex-col w-1/3" x-data="{open: false}">
+                        <button class="mr-4 text-white" x-on:click="open = !open">Generate An Exercise</button>
+                        <div x-show="open" class=" flex flex-col m-5 pb-3 font-bold">
+                                <form phx-submit="generate_exercise" class="flex flex-col" >
+                                        <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_text_input("weight") %>
+                                        <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("push") %>
+                                        <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("pull") %>
+                                        <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("over_head") %>
+                                        <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("dynamic") %>
+                                        <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("isometric") %>
+                                        <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("fingers") %>
+                                        <button class="bg-indigo-600 text-white text-sm leading-6 font-medium py-2 px-3 rounded-lg bg-green-700 hover:bg-green-500" type="submit">Generate Exercise</button>
+                                </form>
+                        </div>
 
-                </div>
-                        <form phx-submit="generate_exercise" class="flex flex-col" >
-                                <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_text_input("weight") %>
-                                <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("push") %>
-                                <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("pull") %>
-                                <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("over_head") %>
-                                <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("dynamic") %>
-                                <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("isometric") %>
-                                <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("fingers") %>
-                                <button class="bg-indigo-600 text-white text-sm leading-6 font-medium py-2 px-3 rounded-lg bg-green-700 hover:bg-green-500" type="submit">Generate Exercise</button>
-                        </form>
+                        <div x-show="!open">
+                                <form phx-submit="create_exercise" class="flex flex-col" >
+                                        <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_text_input("name") %>
+                                        <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_text_input("weight") %>
+                                        <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_slider("reps", 1, 15) %>
+                                        <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("push") %>
+                                        <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("pull") %>
+                                        <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("over_head") %>
+                                        <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("dynamic") %>
+                                        <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("isometric") %>
+                                        <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_radio_button("fingers") %>
+                                        <button class="bg-red-600 text-white text-sm leading-6 font-medium py-2 px-3 rounded-lg bg-green-700 hover:bg-green-500" type="submit">Create Exercise</button>
+                                </form>
+                        </div>
                 </div>
         </div>
+</div>
 
         <div class="m-5">
                 <%= for exercise <- @exercises do %>
@@ -42,9 +45,5 @@
                                 <% end %>
                 </div>
                 <% end %>
-        </div>
-
-        <div class="m-5">
-                <a href="http://localhost:4000" class="text-white">HOME</a>
         </div>
 </div>
