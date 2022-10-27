@@ -1,4 +1,5 @@
-make card link on create_workouts page go to a for which just shows the circuits with this workout id
-take the id from the workout and search for circuits
-preload all the circuits exercises 
-display with tree  
+need to show all the exercise names for a circuit on the circuit card √
+need to make it so you can only make the number of exercises the circuit form says
+need to make a button to come back to here from the workout screen too
+need to make a completed button on circuits so we know when they are completed
+have a ui effect for when the circuit is complete (turns green)  

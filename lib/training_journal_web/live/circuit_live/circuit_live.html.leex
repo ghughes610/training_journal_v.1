@@ -25,13 +25,9 @@
           id: circuit.id
         ) %>
       </div>
+      <%= for exercise <- circuit.exercise do %>
+        <%= exercise.name %>
+      <% end  %>
     </div>
   <% end  %>
 </div>
-
-
-     <%# need to make it so you can only make the number of exercises the circuit form says
-        need to show all the exercises for a circuit here
-        need to make a button to come back to here from the workout screen too
-        need to make a completed button on circuits so we know when they are completed
-        have a ui effect for when the circuit is complete (turns green) %>

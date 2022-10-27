@@ -10,6 +10,8 @@ defmodule TrainingJournalWeb.CircuitLive do
   def mount(%{"id" => id}, _session, socket) do
     id = String.to_integer(id)
     full_workout = Workouts.get_full_workout(id)
+    IO.inspect(full_workout, label: "full workout --->")
+
     socket = assign(socket, circuits: full_workout.circuit, id: id)
 
     {:ok, socket}
