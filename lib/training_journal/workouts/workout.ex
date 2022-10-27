@@ -11,7 +11,7 @@ defmodule TrainingJournal.Workouts.Workout do
     field :type, :string
     field :metadata, :map
 
-    has_many :circuits, TrainingJournal.Circuits.Circuit
+    has_many :circuit, TrainingJournal.Circuits.Circuit
 
     timestamps()
   end

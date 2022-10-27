@@ -11,7 +11,7 @@ defmodule TrainingJournal.Circuits.Circuit do
     field :sets, :integer, default: 3
 
     belongs_to :workout, TrainingJournal.Workouts.Workout
-    # has_many :exercise,  TrainingJournal.Exercises.Exercise
+    has_many :exercise,  TrainingJournal.Exercises.Exercise
 
 
     timestamps()

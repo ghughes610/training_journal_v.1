@@ -16,7 +16,7 @@
                         </div>
 
                         <div x-show="!open">
-                                <form phx-submit="create_exercise" class="flex flex-col" >
+                                <form phx-submit="generate_exercise" class="flex flex-col" >
                                         <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_text_input("name") %>
                                         <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_text_input("weight") %>
                                         <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_slider("reps", 1, 15) %>
