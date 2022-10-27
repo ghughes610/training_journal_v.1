@@ -1,5 +1,6 @@
-need to show all the exercise names for a circuit on the circuit card √
-need to make it so you can only make the number of exercises the circuit form says
-need to make a button to come back to here from the workout screen too
 need to make a completed button on circuits so we know when they are completed
+    add completed_sets key to metadata so we can use it to compare with sets column
+
+need to make a button to come back to circuit from exercises
+need to make it so you can only make the number of exercises the circuit form says
 have a ui effect for when the circuit is complete (turns green)  

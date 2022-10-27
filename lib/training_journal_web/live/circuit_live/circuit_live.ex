@@ -8,10 +8,7 @@ defmodule TrainingJournalWeb.CircuitLive do
   }
 
   def mount(%{"id" => id}, _session, socket) do
-    id = String.to_integer(id)
-    full_workout = Workouts.get_full_workout(id)
-    IO.inspect(full_workout, label: "full workout --->")
-
+    full_workout = Workouts.get_full_workout(String.to_integer(id))
     socket = assign(socket, circuits: full_workout.circuit, id: id)
 
     {:ok, socket}
@@ -28,6 +25,14 @@ defmodule TrainingJournalWeb.CircuitLive do
     end
   end
 
+  def handle_event("complete_set", %{"value" => id}, socket) do
+    # dont think i should be making another call to the database just filtering the full_workout.circuits for the id should be good but i cannot seem to get the circuit id to be included in the preload
+    circuit = Circuits.get_circuit!(String.to_integer(id))
+    attrs = %{ "metadata" => %{"completed_sets" => circuit.metadata["completed_sets"] + 1}}
+    Circuits.update_circuit(circuit, attrs)
+    {:noreply, assign(socket, socket)}
+  end
+
   def handle_event("create_circuit", params, socket) do
     name = if params["circuit_number"] == "" do
       NameBuilder.build_name(params["circuit_number"])
@@ -41,7 +46,7 @@ defmodule TrainingJournalWeb.CircuitLive do
       sets: String.to_integer(params["sets"]),
       rest_time: params["rest_time"],
       workout_id: socket.assigns.id,
-      metadata: %{},
+      metadata: %{"completed_sets" => 0},
       circuit_number: String.to_integer(params["circuit_number"])
     }
 

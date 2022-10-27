@@ -24,10 +24,15 @@
           TrainingJournalWeb.ExerciseLive,
           id: circuit.id
         ) %>
+        <br>
+        <span>Completed Sets: <%= circuit.metadata["completed_sets"] %>/<%= circuit.sets %></span>
       </div>
       <%= for exercise <- circuit.exercise do %>
-        <%= exercise.name %>
+        <br>
+        <h3><%= exercise.name %> / Reps: <%= exercise.reps %> / Weight: <%= exercise.weight %></h3>
+        <br>
       <% end  %>
+      <button phx-click="complete_set" value="<%= circuit.id %>">Complete Set</button>
     </div>
   <% end  %>
 </div>
