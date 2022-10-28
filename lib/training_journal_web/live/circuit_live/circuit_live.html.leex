@@ -15,6 +15,26 @@
   </div>
 
   <%= for circuit <- @circuits do %>
+    <%= if circuit.sets == circuit.metadata["completed_sets"]  do %>
+      <div class="flex flex-col m-8 mr-3.5 max-w-sm rounded overflow-hidden shadow-lg bg-green-500 p-2">
+        <div>
+        <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_delete_button(circuit) %>
+          <%= live_patch "circuit id: #{circuit.id}",
+            to: Routes.live_path(
+            @socket,
+            TrainingJournalWeb.ExerciseLive,
+            id: circuit.id
+          ) %>
+          <br>
+          <span>Completed Sets: <%= circuit.metadata["completed_sets"] %>/<%= circuit.sets %></span>
+        </div>
+        <%= for exercise <- circuit.exercise do %>
+          <br>
+          <h3><%= exercise.name %> / Reps: <%= exercise.reps %> / Weight: <%= exercise.weight %></h3>
+          <br>
+        <% end %>
+      </div>
+    <% else %>
     <div class="flex flex-col m-8 mr-3.5 max-w-sm rounded overflow-hidden shadow-lg bg-blue-500 p-2">
       <div>
       <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_delete_button(circuit) %>
@@ -34,5 +54,6 @@
       <% end  %>
       <button phx-click="complete_set" value="<%= circuit.id %>">Complete Set</button>
     </div>
+    <% end %>
   <% end  %>
 </div>
