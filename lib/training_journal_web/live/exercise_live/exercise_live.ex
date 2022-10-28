@@ -3,22 +3,28 @@ defmodule TrainingJournalWeb.ExerciseLive do
 
   alias TrainingJournal.{
     Calculators.ExerciseCalculator,
+    Circuits,
     Exercises
   }
 
 
   @impl true
-  def mount(%{"id" => id}, _session, socket) do
+  def mount(%{"id" => id}, session, socket) do
     id = String.to_integer(id)
+    circuit = Circuits.get_circuit!(id)
     exercises = Exercises.get_circuit_exercises(id)
-    socket = assign(socket, exercises: exercises, id: id )
+    socket = assign(socket,
+    exercises: exercises,
+    id: id,
+    circuit: circuit)
+    IO.inspect(circuit.number_of_exercises)
+    IO.inspect(Enum.count(exercises))
 
     {:ok, socket}
   end
 
   @impl true
    def handle_event("generate_exercise", params, socket) do
-
     weight = if params["weight"] == "" do
       0
     else
@@ -48,26 +54,24 @@ defmodule TrainingJournalWeb.ExerciseLive do
       |> Map.put(:circuit_id, socket.assigns.id)
       |> Map.put(:metadata, %{})
 
-    with {:ok, new_exercise} <- Exercises.create_exercise(data) do
+      # if socket.assigns.circuit.metadata["completed_sets"] ==  do
 
-      exercises = get_exercises(socket)
-      exercises = [new_exercise | exercises]
+    if socket.assigns.circuit.number_of_exercises >= Enum.count(socket.assigns.exercises) do
+      {:noreply, socket}
+    else
+      with {:ok, new_exercise} <- Exercises.create_exercise(data) do
 
-      {:noreply, assign(socket, :exercises, exercises)}
+        exercises = get_exercises(socket)
+        exercises = [new_exercise | exercises]
+
+        {:noreply, assign(socket, :exercises, exercises)}
+      end
     end
+
   end
 
   def get_exercises(socket) do
     socket.assigns.exercises
-  end
-
-   def heavy_or_light(lb) do
-    cond do
-      lb >= 1 && lb <= 30 -> "light"
-      lb >= 31 && lb <= 50 -> "medium"
-      lb >= 51 && lb <= 70 -> "heavy"
-      true -> "extra heavy"
-    end
   end
 
 end

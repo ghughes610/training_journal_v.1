@@ -1,5 +1,5 @@
 need to make a completed button on circuits so we know when they are completed
-    add completed_sets key to metadata so we can use it to compare with sets column
+    add completed_sets key to metadata so we can use it to compare with sets column √
+    need to make it so you can only make the number of exercises the circuit form says
 
 need to make a button to come back to circuit from exercises
-need to make it so you can only make the number of exercises the circuit form says 
