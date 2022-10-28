@@ -36,7 +36,7 @@ defmodule TrainingJournalWeb.ExerciseLive do
       fingers: params["fingers"] || false,
     }
 
-    name = if params["name"] == "" do
+    name = if params["name"] == "" || params["name"] == nil do
       ExerciseCalculator.calculate_exercise(params)
     else
       params["name"]
