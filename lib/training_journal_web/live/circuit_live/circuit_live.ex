@@ -29,8 +29,13 @@ defmodule TrainingJournalWeb.CircuitLive do
     # dont think i should be making another call to the database just filtering the full_workout.circuits for the id should be good but i cannot seem to get the circuit id to be included in the preload
     circuit = Circuits.get_circuit!(String.to_integer(id))
     attrs = %{ "metadata" => %{"completed_sets" => circuit.metadata["completed_sets"] + 1}}
-    Circuits.update_circuit(circuit, attrs)
-    {:noreply, assign(socket, socket)}
+    result = case Circuits.update_circuit(circuit, attrs) do
+       {:ok, circuits} -> IO.inspect(circuits)
+       {:error, error} -> IO.puts("not updating here is the error #{error}")
+    end
+
+    IO.inspect(result, label: "result")
+    {:noreply, socket}
   end
 
   def handle_event("create_circuit", params, socket) do

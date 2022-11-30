@@ -1,6 +1,12 @@
 defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
   use TrainingJournalWeb, :view
 
+  def header(assigns) do
+    ~H"""
+    <h1>This is the header</h1>
+    """
+  end
+
   def make_slider(name, min \\ 0, max \\ 10) do
     assigns = %{
       min: min,

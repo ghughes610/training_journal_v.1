@@ -9,7 +9,7 @@ defmodule TrainingJournalWeb.ExerciseLive do
 
 
   @impl true
-  def mount(%{"id" => id}, session, socket) do
+  def mount(%{"id" => id}, _session, socket) do
     id = String.to_integer(id)
     circuit = Circuits.get_circuit!(id)
     exercises = Exercises.get_circuit_exercises(id)
@@ -17,8 +17,7 @@ defmodule TrainingJournalWeb.ExerciseLive do
     exercises: exercises,
     id: id,
     circuit: circuit)
-    IO.inspect(circuit.number_of_exercises)
-    IO.inspect(Enum.count(exercises))
+
 
     {:ok, socket}
   end
@@ -56,7 +55,7 @@ defmodule TrainingJournalWeb.ExerciseLive do
 
       # if socket.assigns.circuit.metadata["completed_sets"] ==  do
 
-    if socket.assigns.circuit.number_of_exercises >= Enum.count(socket.assigns.exercises) do
+    if socket.assigns.circuit.number_of_exercises <= Enum.count(socket.assigns.exercises) do
       {:noreply, socket}
     else
       with {:ok, new_exercise} <- Exercises.create_exercise(data) do
