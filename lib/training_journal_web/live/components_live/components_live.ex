@@ -3,7 +3,7 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
 
   def header(assigns) do
     ~H"""
-    <h1>This is the header</h1>
+    <h2 class="m-1.5 text-2xl font-bold text-base font-medium text-black hover:text-gray-500"><a href="http://localhost:4000/">Training Journal</a></h2>
     """
   end
 
@@ -182,8 +182,8 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
   def make_card(assigns) do
     ~H"""
     <%= for w <- @weeks_workouts do %>
-      <div class="text-white m-2">
-        <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+    <div class="text-white m-2">
+    <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
           <dt class="truncate text-sm font-medium text-gray-500"><%= w.type %></dt>
           <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900"><%= w.metadata["days_on"] %> days on</dd>
         </div>
@@ -192,5 +192,41 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
     """
   end
 
+  def nav_menu(assigns) do
+    ~H"""
+    <div x-data="{ open: false }" @mouseover = "open = true" @click = "open = !open">
+      <div
+        @mouseover = "open = true"
+        class="mr-1 relative text-left">
+          <button
+            @mouseover = "open = true"
+            @keydown.escape.window="open = false"
+            class="flex items-center h-8 pl-3 pr-2 border border-black focus:outline-none">
+            <span class="text-sm leading-none">
+              Navigation
+            </span>
+            <svg class="w-4 h-4 mt-px ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          </button>
+          <div
+            @mouseover.away = "open = false"
+            x-cloak
+            x-show="open"
+            x-transition:enter="transition ease-out duration-100"
+            x-transition:enter-start="transform opacity-0 scale-95"
+            x-transition:enter-end="transform opacity-100 scale-100"
+            x-transition:leave="transition ease-in duration-75"
+            x-transition:leave-start="transform opacity-100 scale-100"
+            x-transition:leave-end="transform opacity-0 scale-95"
+            class="absolute flex flex-col w-40 mt-1 border border-black shadow-xs bg-white">
+            <a class="flex items-center h-8 px-3 text-sm hover:bg-gray-200" href="http://localhost:4000/create_workout">Create A Workout</a>
+            <a class="flex items-center h-8 px-3 text-sm hover:bg-gray-200" href="http://localhost:4000/search_workouts">Search Workouts</a>
+            <a class="flex items-center h-8 px-3 text-sm hover:bg-gray-200" href="http://localhost:4000/exercises">Exercises</a>
+          </div>
+      </div>
+    </div>
+    """
+  end
 
 end
