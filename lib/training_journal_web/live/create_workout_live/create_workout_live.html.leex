@@ -15,7 +15,7 @@
     </div>
 
 
-      <hr class="my-5 w-screen">
+      <hr class="my-5 max-w-full">
 
   <div class="flex flex-col w-full overflow-hidden">
 
@@ -24,32 +24,9 @@
       </div>
 
 
-      <div class="">
-        <div class="flex justify-between">
-          <%= for w <- @weeks_workouts do %>
-            <div class="w-60 m-2 p-2 bg-white rounded-xl transform transition-all hover:-translate-y-2 duration-300 shadow-lg hover:shadow-2xl">
-              <img class="h-40 object-cover rounded-xl" h-40 object-cover rounded-xl" src="https://thumbs.dreamstime.com/b/kettlebell-icon-comic-style-barbell-sport-equipment-cartoon-vector-illustration-white-isolated-background-dumbbell-splash-181354706.jpg" alt="">
-              <div class="p-2">
-              <h2 class="font-bold text-lg mb-2"><%= w.name %></h2>
-              <p class="text-sm text-gray-600">generate some discription field or use the notes that can be put on the workout</p>
-              <%= if Timex.compare(w.inserted_at, Timex.beginning_of_day(Timex.now())) == -1 do %>
-                <%= live_patch "See Workout",
-                    to: Routes.live_path(
-                    @socket,
-                    TrainingJournalWeb.FullWorkoutLive,
-                    id: w.id
-                  ) %>
-              <% else  %>
-                <%= live_patch "Add Circuits",
-                    to: Routes.live_path(
-                    @socket,
-                    TrainingJournalWeb.CircuitLive,
-                    id: w.id
-                  ) %>
-              <% end %>
-              </div>
-            </div>
-            <% end %>
+      <div class="flex justify-center">
+        <div class="flex flex-wrap justify-between max-w-xlg">
+            <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_card(assigns) %>
           </div>
         </div>
       </div>

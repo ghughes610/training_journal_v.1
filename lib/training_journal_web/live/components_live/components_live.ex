@@ -169,18 +169,28 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
     """
   end
 
-
-  def make_card(item) do
-    assigns = %{item: item}
-
-    ~L"""
-    <div class="w-60 m-2 p-2 bg-white rounded-xl transform transition-all hover:-translate-y-2 duration-300 shadow-lg hover:shadow-2xl">
-      <img class="h-40 object-cover rounded-xl" h-40 object-cover rounded-xl" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" alt="">
-      <div class="p-2">
-        <h2 class="font-bold text-lg mb-2"><%= @item.name %></h2>
-        <p class="text-sm text-gray-600">Simple Yet Beautiful Card Design with TaiwlindCss. Subscribe to our Youtube channel for more ...</p>
-      </div>
+  def stat_container(assigns) do
+    ~H"""
+    <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+      <dt class="truncate text-sm font-medium text-gray-500"><%= @data %></dt>
+      <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">71,897</dd>
     </div>
     """
   end
+
+
+  def make_card(assigns) do
+    ~H"""
+    <%= for w <- @weeks_workouts do %>
+      <div class="text-white m-2">
+        <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+          <dt class="truncate text-sm font-medium text-gray-500"><%= w.type %></dt>
+          <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900"><%= w.metadata["days_on"] %> days on</dd>
+        </div>
+      </div>
+    <% end %>
+    """
+  end
+
+
 end
