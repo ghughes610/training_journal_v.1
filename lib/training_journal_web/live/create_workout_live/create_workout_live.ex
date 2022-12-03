@@ -39,12 +39,24 @@ defmodule TrainingJournalWeb.CreateWorkoutLive do
       workouts = get_workouts(socket)
       workouts = [new_workout | workouts]
 
-
       socket = assign(socket, weeks_workouts: workouts)
 
       {:noreply, socket}
     end
   end
+
+  @impl true
+  def handle_event("delete", %{"id" => id}, socket) do
+    workouts = get_workouts(socket)
+    workout = Workouts.get_workout!(id)
+
+    with {:ok, deleted_workout} <- Workouts.delete_workout(workout) do
+      Enum.filter(workouts, fn workout -> workout.id != deleted_workout.id end)
+      workouts = get_workouts(socket)
+      {:noreply, assign(socket, :workouts, workouts)}
+    end
+  end
+
 
   def get_workouts(socket) do
     socket.assigns.weeks_workouts

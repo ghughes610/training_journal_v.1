@@ -3,7 +3,7 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
 
   def header(assigns) do
     ~H"""
-    <h2 class="m-1.5 text-2xl font-bold text-base font-medium text-black hover:text-gray-500"><a href="http://localhost:4000/">Training Journal</a></h2>
+    <h2 class="m-1.5 text-xl font-bold text-base font-medium text-black hover:text-gray-500"><a href="http://localhost:4000/">Training Journal</a></h2>
     """
   end
 
@@ -186,6 +186,13 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
     <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
           <dt class="truncate text-sm font-medium text-gray-500"><%= w.type %></dt>
           <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900"><%= w.metadata["days_on"] %> days on</dd>
+          <span class="text-black">
+            <%= link("Delete",
+                      to: "#",
+                      phx_click: "delete",
+                      phx_value_id: w.id
+            ) %>
+          </span>
         </div>
       </div>
     <% end %>
