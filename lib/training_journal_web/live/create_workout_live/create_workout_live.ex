@@ -36,10 +36,7 @@ defmodule TrainingJournalWeb.CreateWorkoutLive do
 
     with {:ok, new_workout} <- Workouts.create_workout(data) do
 
-      workouts = get_workouts(socket)
-      workouts = [new_workout | workouts]
-
-      socket = assign(socket, weeks_workouts: workouts)
+      socket = assign(socket, weeks_workouts: [new_workout | get_workouts(socket)])
 
       {:noreply, socket}
     end
@@ -47,18 +44,35 @@ defmodule TrainingJournalWeb.CreateWorkoutLive do
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
-    workouts = get_workouts(socket)
     workout = Workouts.get_workout!(id)
 
-    with {:ok, deleted_workout} <- Workouts.delete_workout(workout) do
-      Enum.filter(workouts, fn workout -> workout.id != deleted_workout.id end)
-      workouts = get_workouts(socket)
-      {:noreply, assign(socket, :workouts, workouts)}
+    workouts = with {:ok, deleted_workout} <- Workouts.delete_workout(workout) do
+      Enum.filter(get_workouts(socket), fn workout -> workout.id != deleted_workout.id end)
     end
+
+    {:noreply, assign(socket, :weeks_workouts, workouts)}
   end
 
-
-  def get_workouts(socket) do
-    socket.assigns.weeks_workouts
-  end
+  def get_workouts(socket), do: socket.assigns.weeks_workouts
 end
+
+
+
+
+# def handle_event("cancel-order", _, socket) do
+#   ...
+#   send_update(Cart, id: "cart", status: "cancelled")
+#   {:noreply, socket}
+# end
+
+# def handle_event("cancel-order-asynchronously", _, socket) do
+#   ...
+#   pid = self()
+
+#   Task.start(fn ->
+#     # Do something asynchronously
+#     send_update(pid, Cart, id: "cart", status: "cancelled")
+#   end)
+
+#   {:noreply, socket}
+# end
