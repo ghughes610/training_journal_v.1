@@ -183,9 +183,16 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
     ~H"""
     <%= for w <- @weeks_workouts do %>
     <div class="text-white m-2">
-    <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+    <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6 text-black">
           <dt class="truncate text-sm font-medium text-gray-500"><%= w.type %></dt>
-          <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900"><%= Timex.format!(w.inserted_at, "{YYYY}-{0M}-{0D}") %> </dd>
+          <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
+            <%= live_patch w.name,
+                      to: Routes.live_path(
+                      @socket,
+                      TrainingJournalWeb.CircuitLive,
+                      id: w.id
+                    ) %>
+          </dd>
           <span class="text-black">
             <%= link("Delete",
                       to: "#",
