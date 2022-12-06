@@ -14,10 +14,12 @@ defmodule TrainingJournalWeb.ExerciseLive do
     circuit = Circuits.get_circuit!(id)
     exercises = Exercises.get_circuit_exercises(id)
     socket = assign(socket,
-    exercises: exercises,
+    items: exercises,
+    module: nil,
     id: id,
     circuit: circuit)
 
+    IO.inspect(socket)
 
     {:ok, socket}
   end

@@ -179,8 +179,28 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
   end
 
   def card(assigns) do
+
+
     ~H"""
-    <%= for i <- @items do %>
+    <%= if is_nil(assigns.module) do %>
+      <%= for i <- @items do %>
+      <div class="text-white m-2">
+      <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6 text-black">
+            <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
+              <%= i.name %>
+            </dd>
+            <span class="text-black">
+              <%= link("Delete",
+                        to: "#",
+                        phx_click: "delete",
+                        phx_value_id: i.id
+              ) %>
+            </span>
+          </div>
+        </div>
+      <% end %>
+      <% else %>
+      <%= for i <- @items do %>
     <div class="text-white m-2">
     <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6 text-black">
           <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
@@ -201,8 +221,11 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
         </div>
       </div>
     <% end %>
+    <% end %>
     """
   end
+
+
 
   def nav_menu(assigns) do
     ~H"""
