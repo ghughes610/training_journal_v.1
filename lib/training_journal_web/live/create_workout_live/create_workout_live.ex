@@ -10,7 +10,7 @@ defmodule TrainingJournalWeb.CreateWorkoutLive do
   @impl true
   def mount(_params, _session, socket) do
     weeks_workouts = Workouts.list_workouts_week(Timex.now())
-    socket = assign(socket, weeks_workouts: weeks_workouts)
+    socket = assign(socket, items: weeks_workouts)
 
     {:ok, socket}
   end
@@ -36,7 +36,7 @@ defmodule TrainingJournalWeb.CreateWorkoutLive do
 
     with {:ok, new_workout} <- Workouts.create_workout(data) do
 
-      socket = assign(socket, weeks_workouts: [new_workout | get_workouts(socket)])
+      socket = assign(socket, items: [new_workout | get_workouts(socket)])
 
       {:noreply, socket}
     end
@@ -50,10 +50,10 @@ defmodule TrainingJournalWeb.CreateWorkoutLive do
       Enum.filter(get_workouts(socket), fn workout -> workout.id != deleted_workout.id end)
     end
 
-    {:noreply, assign(socket, :weeks_workouts, workouts)}
+    {:noreply, assign(socket, :items, workouts)}
   end
 
-  def get_workouts(socket), do: socket.assigns.weeks_workouts
+  def get_workouts(socket), do: socket.assigns.items
 end
 
 

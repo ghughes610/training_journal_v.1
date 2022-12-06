@@ -181,23 +181,22 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
 
   def card(assigns) do
     ~H"""
-    <%= for w <- @weeks_workouts do %>
+    <%= for i <- @items do %>
     <div class="text-white m-2">
     <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6 text-black">
-          <dt class="truncate text-sm font-medium text-gray-500"><%= w.type %></dt>
           <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
-            <%= live_patch w.name,
+            <%= live_patch i.name,
                       to: Routes.live_path(
                       @socket,
                       TrainingJournalWeb.CircuitLive,
-                      id: w.id
+                      id: i.id
                     ) %>
           </dd>
           <span class="text-black">
             <%= link("Delete",
                       to: "#",
                       phx_click: "delete",
-                      phx_value_id: w.id
+                      phx_value_id: i.id
             ) %>
           </span>
         </div>
