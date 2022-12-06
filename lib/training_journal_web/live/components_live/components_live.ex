@@ -185,7 +185,7 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
     <%= if is_nil(assigns.module) do %>
       <%= for i <- @items do %>
       <div class="text-white m-2">
-      <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6 text-black">
+        <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6 text-black">
             <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
               <%= i.name %>
             </dd>
@@ -202,7 +202,7 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
       <% else %>
       <%= for i <- @items do %>
     <div class="text-white m-2">
-    <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6 text-black">
+      <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6 text-black">
           <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
             <%= live_patch i.name,
                       to: Routes.live_path(
@@ -219,6 +219,7 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
             ) %>
           </span>
         </div>
+        <%=  %>
       </div>
     <% end %>
     <% end %>

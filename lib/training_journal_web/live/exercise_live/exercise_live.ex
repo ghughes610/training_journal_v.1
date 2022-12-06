@@ -57,7 +57,7 @@ defmodule TrainingJournalWeb.ExerciseLive do
 
       # if socket.assigns.circuit.metadata["completed_sets"] ==  do
 
-    if socket.assigns.circuit.number_of_exercises <= Enum.count(socket.assigns.exercises) do
+    if socket.assigns.circuit.number_of_exercises <= Enum.count(socket.assigns.items) do
       {:noreply, socket}
     else
       with {:ok, new_exercise} <- Exercises.create_exercise(data) do
@@ -65,14 +65,14 @@ defmodule TrainingJournalWeb.ExerciseLive do
         exercises = get_exercises(socket)
         exercises = [new_exercise | exercises]
 
-        {:noreply, assign(socket, :exercises, exercises)}
+        {:noreply, assign(socket, :items, exercises)}
       end
     end
 
   end
 
   def get_exercises(socket) do
-    socket.assigns.exercises
+    socket.assigns.items
   end
 
 end
