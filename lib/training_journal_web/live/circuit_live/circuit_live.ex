@@ -9,19 +9,19 @@ defmodule TrainingJournalWeb.CircuitLive do
 
   def mount(%{"id" => id}, _session, socket) do
     full_workout = Workouts.get_full_workout(String.to_integer(id))
-    socket = assign(socket, circuits: full_workout.circuit, id: id)
+    socket = assign(socket, items: full_workout.circuit, id: id, module: TrainingJournalWeb.ExerciseLive)
 
     {:ok, socket}
   end
 
-    def handle_event("delete", %{"id" => id}, socket) do
+  def handle_event("delete", %{"id" => id}, socket) do
     circuits = get_circuits(socket)
     circuit = Circuits.get_circuit!(id)
 
     with {:ok, deleted_circuit} <- Circuits.delete_circuit(circuit) do
       circuits = Enum.filter(circuits, fn circuit -> circuit.id != deleted_circuit.id end)
 
-      {:noreply, assign(socket, :circuits, circuits)}
+      {:noreply, assign(socket, :items, circuits)}
     end
   end
 
@@ -60,12 +60,12 @@ defmodule TrainingJournalWeb.CircuitLive do
       circuits = get_circuits(socket)
       circuits = [new_circuit | circuits]
 
-      {:noreply, assign(socket, :circuits, circuits)}
+      {:noreply, assign(socket, :items, circuits)}
     end
   end
 
   def get_circuits(socket) do
-    socket.assigns.circuits
+    socket.assigns.items
   end
 
 end

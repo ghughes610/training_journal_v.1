@@ -178,7 +178,6 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
     """
   end
 
-
   def card(assigns) do
     ~H"""
     <%= for i <- @items do %>
@@ -188,7 +187,7 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
             <%= live_patch i.name,
                       to: Routes.live_path(
                       @socket,
-                      TrainingJournalWeb.CircuitLive,
+                      @module,
                       id: i.id
                     ) %>
           </dd>
