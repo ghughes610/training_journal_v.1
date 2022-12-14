@@ -200,28 +200,32 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
         </div>
       <% end %>
       <% else %>
-      <%= for i <- @items do %>
-    <div class="text-white m-2">
-      <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6 text-black">
-          <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
-            <%= live_patch i.name,
-                      to: Routes.live_path(
-                      @socket,
-                      @module,
-                      id: i.id
-                    ) %>
-          </dd>
-          <span class="text-black">
-            <%= link("Delete",
-                      to: "#",
-                      phx_click: "delete",
-                      phx_value_id: i.id
-            ) %>
-          </span>
-        </div>
-        <%=  %>
-      </div>
-    <% end %>
+        <%= for i <- @items do %>
+          <li class="col-span-1 flex rounded-md shadow-sm">
+            <div class="flex-shrink-0 flex items-center justify-center w-16 bg-pink-600 text-white text-sm font-medium rounded-l-md">GA</div>
+            <div class="flex flex-1 items-center justify-between truncate rounded-r-md border-t border-r border-b border-gray-200 bg-white">
+              <div class="flex-1 truncate px-4 py-2 text-sm">
+                <a class="font-medium text-gray-900 hover:text-gray-600">
+                            <%= live_patch i.name,
+                              to: Routes.live_path(
+                              @socket,
+                              @module,
+                              id: i.id
+                            ) %>
+                          </a>
+                <p class="text-gray-500"><%= Timex.format!(i.inserted_at, "{M}/{D}/{YYYY}") %></p>
+              </div>
+              <div class="flex-shrink-0 pr-2">
+                <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white bg-transparent text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                  <!-- Heroicon name: mini/ellipsis-vertical -->
+                  <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path d="M10 3a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM10 8.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM11.5 15.5a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0z" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </li>
+      <% end %>
     <% end %>
     """
   end

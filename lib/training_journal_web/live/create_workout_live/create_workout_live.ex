@@ -9,10 +9,11 @@ defmodule TrainingJournalWeb.CreateWorkoutLive do
 
   @impl true
   def mount(_params, _session, socket) do
+
     weeks_workouts = Workouts.list_workouts_week(Timex.now())
     socket = assign(socket, items: weeks_workouts, module: TrainingJournalWeb.CircuitLive)
 
-    {:ok, socket}
+  {:ok, socket}
   end
 
   @impl true
@@ -54,6 +55,8 @@ defmodule TrainingJournalWeb.CreateWorkoutLive do
   end
 
   def get_workouts(socket), do: socket.assigns.items
+
+
 end
 
 

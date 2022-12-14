@@ -39,13 +39,8 @@ defmodule TrainingJournalWeb.CircuitLive do
   end
 
   def handle_event("create_circuit", params, socket) do
-    name = if params["circuit_number"] == "" do
-      NameBuilder.build_name(params["circuit_number"])
-    else
-      params["circuit_number"]
-    end
     data = %{
-      name: name,
+      name: params["name"],
       completed: false,
       number_of_exercises: String.to_integer(params["number_of_exercises"]),
       sets: String.to_integer(params["sets"]),
