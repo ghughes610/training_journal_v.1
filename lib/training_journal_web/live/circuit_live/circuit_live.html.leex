@@ -15,8 +15,8 @@
     </form>
   </div>
 
-  <div class="flex flex-wrap justify-between max-w-xlg">
-    <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.card(assigns) %>
-  </div>
+  <ul role="list" class="mt-3 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
+      <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.circuit_card(assigns) %>
+  </ul>
 
 </div>

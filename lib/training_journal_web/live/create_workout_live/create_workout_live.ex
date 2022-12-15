@@ -2,7 +2,6 @@ defmodule TrainingJournalWeb.CreateWorkoutLive do
   use TrainingJournalWeb, :live_view
 
   alias TrainingJournal.{
-    Builders.NameBuilder,
     Calculators.ShouldTrainCalculator,
     Workouts
     }
@@ -20,7 +19,7 @@ defmodule TrainingJournalWeb.CreateWorkoutLive do
   def handle_event("create_workout", params, socket) do
 
     data = %{
-      name: NameBuilder.build_name(params["type"]),
+      name: Timex.now |> Timex.weekday |> Timex.day_name,
       type: params["type"],
       finger_training: params["finger_training"] || false,
       cross_training: params["cross_training"] || true,
