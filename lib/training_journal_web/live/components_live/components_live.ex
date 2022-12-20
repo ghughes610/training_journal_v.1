@@ -42,32 +42,6 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
     """
   end
 
-  def expand_workout_card(selected_workout) do
-    assigns = %{selected_workout: selected_workout}
-
-    ~L"""
-    <div>
-      <div>
-        <blockquote>
-          Cross Training: <%= @selected_workout.cross_training %>
-        </blockquote>
-        <blockquote>
-          Finger Training: <%= @selected_workout.finger_training %>
-        </blockquote>
-        <blockquote>
-          Days On: <%= @selected_workout.metadata["days_on"] %>
-        </blockquote>
-        <blockquote>
-          Freshness: <%= @selected_workout.metadata["freshness"] %>/10
-        </blockquote>
-        <blockquote>
-          Should Train: <%= @selected_workout.metadata["should_train"] %>
-        </blockquote>
-      </div>
-    </div>
-    """
-  end
-
   def make_text_input(field, display_name \\ nil) do
     assigns = %{
       field: field,
@@ -157,24 +131,6 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
         <option value="<%= opt %>"><%= opt %></option>
       <% end %>
     </select>
-    """
-  end
-
-  def make_delete_button(struct) do
-    assigns = %{
-      struct: struct
-    }
-    ~L"""
-    <button phx-click="delete" phx-value-id="<%= @struct.id %>" class="m-5 p-2 max-w-sm rounded overflow-hidden shadow-lg bg-red-500">X</button>
-    """
-  end
-
-  def stat_container(assigns) do
-    ~H"""
-    <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
-      <dt class="truncate text-sm font-medium text-gray-500"><%= @data %></dt>
-      <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">71,897</dd>
-    </div>
     """
   end
 
@@ -282,8 +238,6 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
     <% end %>
     """
   end
-
-
 
   def nav_menu(assigns) do
     ~H"""
