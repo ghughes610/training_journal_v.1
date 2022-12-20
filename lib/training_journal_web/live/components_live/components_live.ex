@@ -171,7 +171,7 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
     ~H"""
     <%= for i <- @items do %>
       <li class="col-span-1 flex rounded-md shadow-sm">
-        <div class="flex-shrink-0 flex items-center justify-center w-16 bg-pink-600 text-white text-sm font-medium rounded-l-md"><%= i.metadata["completed_sets"] || String.first(i.type)  %></div>
+        <div class={["flex-shrink-0 flex items-center justify-center w-16 bg-pink-600 text-white text-sm font-medium rounded-l-md", (if i.type, do: " #{Enum.random([" bg-blue-600", " bg-red-600", "  bg-green-600", "  bg-gray-600"])}", else: " bg-blue-600") ]}><%= i.metadata["completed_sets"] || String.first(i.type)  %></div>
             <div class="flex flex-1 items-center justify-between truncate rounded-r-md border-t border-r border-b border-gray-200 bg-white">
             <div class="flex-1 truncate px-4 py-2 text-sm">
               <a class="font-medium text-gray-900 hover:text-gray-600">
@@ -276,7 +276,7 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
     """
   end
 
-  defp if_else_emoji(field, emoji_1, emoji_2) do
+  def if_else_emoji(field, emoji_1, emoji_2) do
     if field do
       emoji_1
      else
