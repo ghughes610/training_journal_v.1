@@ -226,16 +226,8 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
               id: i.id
               ) %>
               </a>
-              <%= if i.metadata["morning_workout"] do %>
-                <p class="text-xl">🌞</p>
-              <% else %>
-                <p class="text-xl">🌗</p>
-              <% end %>
-              <%= if i.finger_training do %>
-                <p class="text-xl">✋ 🏋️</p>
-              <% else %>
-                <p class="text-xl">🏋️</p>
-              <% end %>
+              <p class="text-2xl"><%= if_else_emoji(i.metadata["morning_workout"], "☀️", "🌗") %></p>
+              <p class="text-2xl"><%= if_else_emoji(i.finger_training, "✋ 🏋️", "🏋️") %></p>
               <p class="text-gray-500"><%= Timex.format!(i.inserted_at, "{M}/{D}/{YYYY}") %></p>
             </div>
             <div class="flex-shrink-0 pr-2">
@@ -328,6 +320,14 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
       </div>
     </div>
     """
+  end
+
+  defp if_else_emoji(field, emoji_1, emoji_2) do
+    if field do
+      emoji_1
+     else
+      emoji_2
+    end
   end
 
 end
