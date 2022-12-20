@@ -53,7 +53,7 @@ defmodule TrainingJournalWeb.CircuitLive do
     with {:ok, new_circuit} <- Circuits.create_circuit(data) do
 
       circuits = get_circuits(socket)
-      circuits = [new_circuit | circuits]
+      circuits = [ new_circuit | circuits]
 
       {:noreply, assign(socket, :items, circuits)}
     end

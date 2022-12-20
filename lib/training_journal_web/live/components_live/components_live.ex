@@ -226,10 +226,15 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
               id: i.id
               ) %>
               </a>
-              <%= if i.finger_training do %>
-              <p class="text-xl">✋ 🏋️</p>
+              <%= if i.metadata["morning_workout"] do %>
+                <p class="text-xl">🌞</p>
               <% else %>
-              <p class="text-xl">🏋️</p>
+                <p class="text-xl">🌗</p>
+              <% end %>
+              <%= if i.finger_training do %>
+                <p class="text-xl">✋ 🏋️</p>
+              <% else %>
+                <p class="text-xl">🏋️</p>
               <% end %>
               <p class="text-gray-500"><%= Timex.format!(i.inserted_at, "{M}/{D}/{YYYY}") %></p>
             </div>
@@ -252,7 +257,13 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
     ~H"""
     <%= for i <- @items do %>
       <li class="col-span-1 flex rounded-md shadow-sm">
-        <div class="flex-shrink-0 flex items-center justify-center w-16 bg-pink-600 text-white text-sm font-medium rounded-l-md"><%= i.name || String.first(i.type)  %></div>
+        <div class="flex-shrink-0 flex items-center justify-center w-16 bg-pink-600 text-white text-sm font-medium rounded-l-md">
+        <%= link("√",
+              to: "#",
+              phx_click: "complete_set",
+              phx_value_id: i.id
+              ) %>
+        </div>
             <div class="flex flex-1 items-center justify-between truncate rounded-r-md border-t border-r border-b border-gray-200 bg-white">
             <div class="flex-1 truncate px-4 py-2 text-sm">
               <a class="font-medium text-gray-900 hover:text-gray-600">

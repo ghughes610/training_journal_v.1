@@ -30,7 +30,8 @@ defmodule TrainingJournalWeb.CreateWorkoutLive do
         freshness: params["freshness"],
         days_on: params["days_on"],
         body_weight: params["body_weight"],
-        day_of_week: Timex.now |> Timex.weekday |> Timex.day_shortname
+        day_of_week: Timex.now |> Timex.weekday |> Timex.day_shortname,
+        morning_workout: am_workout?()
        }
     }
 
@@ -55,26 +56,11 @@ defmodule TrainingJournalWeb.CreateWorkoutLive do
 
   def get_workouts(socket), do: socket.assigns.items
 
-
+  def am_workout?(time \\ Timex.now()) do
+    case Timex.compare(Timex.set(time, [hour: 12]), time) do
+      -1 -> true
+      1 -> false
+      _ -> true
+    end
+  end
 end
-
-
-
-
-# def handle_event("cancel-order", _, socket) do
-#   ...
-#   send_update(Cart, id: "cart", status: "cancelled")
-#   {:noreply, socket}
-# end
-
-# def handle_event("cancel-order-asynchronously", _, socket) do
-#   ...
-#   pid = self()
-
-#   Task.start(fn ->
-#     # Do something asynchronously
-#     send_update(pid, Cart, id: "cart", status: "cancelled")
-#   end)
-
-#   {:noreply, socket}
-# end

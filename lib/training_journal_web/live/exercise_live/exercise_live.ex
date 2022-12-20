@@ -24,7 +24,7 @@ defmodule TrainingJournalWeb.ExerciseLive do
   end
 
   @impl true
-   def handle_event("generate_exercise", params, socket) do
+  def handle_event("generate_exercise", params, socket) do
     weight = if params["weight"] == "" do
       0
     else
@@ -67,11 +67,14 @@ defmodule TrainingJournalWeb.ExerciseLive do
         {:noreply, assign(socket, :items, exercises)}
       end
     end
-
   end
 
-  def get_exercises(socket) do
-    socket.assigns.items
+
+  def handle_event("complete_set", %{"id" => id}, socket) do
+    exercise = Exercises.get_exercise!(id)
+    IO.inspect(exercise)
+    {:noreply, socket}
   end
 
+  def get_exercises(socket), do: socket.assigns.items
 end
