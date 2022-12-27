@@ -1,8 +1,6 @@
 <div>
-  <div class="flex w-screen">
-    <span class="flex font-medium text-3xl justify-center w-screen">My Circuits</span>
-  </div>
-
+  <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.section_header(assigns) %>
+  
   <div class="flex place-content-center">
     <form phx-submit="create_circuit" class="flex flex-col" >
       <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_text_input("name") %>
