@@ -72,26 +72,14 @@ defmodule TrainingJournalWeb.ExerciseLive do
 
   def handle_event("complete_set", %{"id" => id}, socket) do
     exercise = Exercises.get_exercise!(id)
-    circuit = Circuits.get_circuit!(exercise.circuit_id)
-    attrs = %{ "metadata" => %{"completed_sets" => circuit.metadata["completed_sets"] + 1}}
-    updated_circuit = case Circuits.update_circuit(circuit, attrs) do
-       {:ok, circuits} -> IO.inspect(circuits)
+    attrs = %{ "completed_sets" => exercise.completed_sets + 1}
+    case Exercises.update_exercise(exercise, attrs) do
+       {:ok, exercise} -> IO.inspect(exercise)
        {:error, error} -> IO.puts("not updating here is the error #{error}")
     end
-    IO.inspect(updated_circuit)
+    # need to reload the exercises and display next
     {:noreply, socket}
   end
 
   def get_exercises(socket), do: socket.assigns.items
 end
-
-
-    # dont think i should be making another call to the database just filtering the full_workout.circuits for the id should be good but i cannot seem to get the circuit id to be included in the preload
-    # circuit = Circuits.get_circuit!(String.to_integer(id))
-    # attrs = %{ "metadata" => %{"completed_sets" => circuit.metadata["completed_sets"] + 1}}
-    # result = case Circuits.update_circuit(circuit, attrs) do
-    #    {:ok, circuits} -> IO.inspect(circuits)
-    #    {:error, error} -> IO.puts("not updating here is the error #{error}")
-    # end
-
-    # IO.inspect(result, label: "result")
