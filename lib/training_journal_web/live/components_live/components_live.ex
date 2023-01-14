@@ -236,6 +236,7 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
               ) %>
               </a>
               <p class="text-gray-500"><%= Timex.format!(i.inserted_at, "{M}/{D}/{YYYY}") %></p>
+              <p class="text-gray-500"><%= i.completed_sets %></p>
             </div>
             <div class="flex-shrink-0 pr-2">
               <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white bg-transparent text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">

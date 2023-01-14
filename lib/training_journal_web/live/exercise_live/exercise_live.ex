@@ -72,13 +72,16 @@ defmodule TrainingJournalWeb.ExerciseLive do
 
   def handle_event("complete_set", %{"id" => id}, socket) do
     exercise = Exercises.get_exercise!(id)
-    attrs = %{ "completed_sets" => exercise.completed_sets + 1}
-    case Exercises.update_exercise(exercise, attrs) do
+    circuit = Circuits.get_circuit!(exercise.circuit_id)
+
+    if circuit.sets != exercise.completed_sets do
+      attrs = %{ "completed_sets" => exercise.completed_sets + 1}
+      case Exercises.update_exercise(exercise, attrs) do
        {:ok, exercise} -> IO.inspect(exercise)
        {:error, error} -> IO.puts("not updating here is the error #{error}")
+      end
+      {:noreply, socket}
     end
-    # need to reload the exercises and display next
-    {:noreply, socket}
   end
 
   def get_exercises(socket), do: socket.assigns.items
