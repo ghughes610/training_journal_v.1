@@ -62,11 +62,20 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
     }
     if display_name == nil do
       ~L"""
-      <input type="text" placeholder="<%= String.capitalize(@field) %>" name="<%= @field %>" class="m-3 p-2 text-center border border-green-500"/>
+      <div>
+        <div class="relative my-1.5 rounded-md shadow-sm">
+          <input type="text" placeholder="<%= String.capitalize(@field) %>" name="<%= @field %>" class="p-3 block w-full rounded-md border-gray-300 pr-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+        </div>
+      </div>
       """
     else
       ~L"""
-      <input type="text" placeholder="<%= @display_name %>" name="<%= @field %>" class="m-3 p-2 text-center border border-green-500"/>
+      <div>
+        <div class="relative my-1.5 rounded-md shadow-sm">
+          <input type="text" placeholder="<%= @display_name %>" name="<%= @field %>" class="p-3 block w-full rounded-md border-gray-300 pr-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+        </div>
+      </div>
+
       """
     end
   end
