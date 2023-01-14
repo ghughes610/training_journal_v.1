@@ -13,7 +13,6 @@ defmodule TrainingJournalWeb.ExerciseLive do
     id = String.to_integer(id)
     circuit = Circuits.get_circuit!(id)
     exercises = Exercises.get_circuit_exercises(id)
-    IO.inspect(circuit.workout_id, label: :workout_id)
 
     socket = assign(socket,
     items: exercises,

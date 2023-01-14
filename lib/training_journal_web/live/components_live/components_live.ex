@@ -151,7 +151,7 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
     ~H"""
       <%= for i <- @items do %>
         <li class="col-span-1 flex rounded-md shadow-sm">
-          <div class="flex-shrink-0 flex items-center justify-center w-16 bg-pink-600 text-white text-sm font-medium rounded-l-md"><%= i.metadata["completed_sets"] %></div>
+          <div class="flex-shrink-0 flex items-center justify-center w-16 bg-pink-600 text-white text-sm font-medium rounded-l-md"><%= i.number_of_exercises %></div>
           <div class="flex flex-1 items-center justify-between truncate rounded-r-md border-t border-r border-b border-gray-200 bg-white">
             <div class="flex-1 truncate px-4 py-2 text-sm">
               <a class="font-medium text-gray-900 hover:text-gray-600">
@@ -296,6 +296,20 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
      else
       emoji_2
     end
+  end
+
+  def make_back_button(assigns) do
+    ~H"""
+    <span class="mt-2 ml-1 isolate inline-flex rounded-md shadow-sm">
+          <button type="button" class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                  <!-- Heroicon name: mini/bookmark -->
+                  <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" />
+                  </svg>
+                  <a  class="mx-2" href="/workout/circuit?id={ @circuit.workout_id }">Back</a>
+          </button>
+      </span>
+    """
   end
 
 end
