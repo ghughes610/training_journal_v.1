@@ -13,6 +13,7 @@ defmodule TrainingJournalWeb.ExerciseLive do
     id = String.to_integer(id)
     circuit = Circuits.get_circuit!(id)
     exercises = Exercises.get_circuit_exercises(id)
+
     socket = assign(socket,
     items: exercises,
     module: __MODULE__,
@@ -57,7 +58,8 @@ defmodule TrainingJournalWeb.ExerciseLive do
       # if socket.assigns.circuit.metadata["completed_sets"] ==  do
 
     if socket.assigns.circuit.number_of_exercises <= Enum.count(socket.assigns.items) do
-      {:noreply, socket}
+
+      {:noreply, put_flash(socket, :error, "You have already made #{socket.assigns.circuit.number_of_exercises} exercises for this circuit!")}
     else
       with {:ok, new_exercise} <- Exercises.create_exercise(data) do
 
@@ -75,13 +77,32 @@ defmodule TrainingJournalWeb.ExerciseLive do
     circuit = Circuits.get_circuit!(exercise.circuit_id)
 
     if circuit.sets != exercise.completed_sets do
+
       attrs = %{ "completed_sets" => exercise.completed_sets + 1}
+
       case Exercises.update_exercise(exercise, attrs) do
-       {:ok, exercise} -> IO.inspect(exercise)
-       {:error, error} -> IO.puts("not updating here is the error #{error}")
+       {:ok, _exercise} ->
+          exercises = Exercises.get_circuit_exercises(circuit.id)
+          socket = assign(socket, :items, exercises)
+         {:noreply, put_flash(assign(socket, :items, exercises), :info, "complete 1 set for #{exercise.name}")}
+
+       {:error, error} -> IO.inspect(error, label: :error)
       end
-      {:noreply, socket}
+
+    else
+      {:noreply, put_flash(socket, :error, "sets are completed for #{exercise.name}")}
     end
+  end
+
+    @impl true
+  def handle_event("delete", %{"id" => id}, socket) do
+    exercise = Exercises.get_exercise!(id)
+
+    exercises = with {:ok, deleted_exercise} <- Exercises.delete_exercise(exercise) do
+      Enum.filter(get_exercises(socket), fn exercise -> exercise.id != deleted_exercise.id end)
+    end
+
+    {:noreply, assign(socket, :items, exercises)}
   end
 
   def get_exercises(socket), do: socket.assigns.items
