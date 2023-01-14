@@ -1,6 +1,4 @@
 <div>
-  <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.section_header(assigns) %>
-  
   <div class="flex place-content-center">
     <form phx-submit="create_circuit" class="flex flex-col" >
       <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.make_text_input("name") %>
@@ -16,5 +14,4 @@
   <ul role="list" class="mt-3 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
       <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.circuit_card(assigns) %>
   </ul>
-
 </div>

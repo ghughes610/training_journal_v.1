@@ -1,7 +1,8 @@
-need to make a button to come back to circuit from exercises
-    need to give the curcuit id to a button so we can return back to a circuit from its exercises page
-
 make whiteboard type UI
     use grid to make it 
     put each type of card into each column 
     click button on card to complete set 
+
+if all of the exercises sets are complete then update the circuits compled field to true
+    look at all the exercises on mount of the exercise component √
+    check exerscies after each complete set

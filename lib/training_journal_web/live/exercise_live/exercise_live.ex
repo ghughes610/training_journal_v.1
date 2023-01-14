@@ -13,6 +13,7 @@ defmodule TrainingJournalWeb.ExerciseLive do
     id = String.to_integer(id)
     circuit = Circuits.get_circuit!(id)
     exercises = Exercises.get_circuit_exercises(id)
+    IO.inspect(circuit.workout_id, label: :workout_id)
 
     socket = assign(socket,
     items: exercises,
@@ -21,7 +22,7 @@ defmodule TrainingJournalWeb.ExerciseLive do
     circuit: circuit)
 
 
-    {:ok, socket}
+    completed(exercises, circuit, {:ok, put_flash(socket, :info, "You Completed This Circuit!")}, {:ok, socket})
   end
 
   @impl true
@@ -55,8 +56,6 @@ defmodule TrainingJournalWeb.ExerciseLive do
       |> Map.put(:circuit_id, socket.assigns.id)
       |> Map.put(:metadata, %{})
 
-      # if socket.assigns.circuit.metadata["completed_sets"] ==  do
-
     if socket.assigns.circuit.number_of_exercises <= Enum.count(socket.assigns.items) do
 
       {:noreply, put_flash(socket, :error, "You have already made #{socket.assigns.circuit.number_of_exercises} exercises for this circuit!")}
@@ -84,7 +83,7 @@ defmodule TrainingJournalWeb.ExerciseLive do
        {:ok, _exercise} ->
           exercises = Exercises.get_circuit_exercises(circuit.id)
           socket = assign(socket, :items, exercises)
-         {:noreply, put_flash(assign(socket, :items, exercises), :info, "complete 1 set for #{exercise.name}")}
+          completed(exercises, circuit, {:noreply, socket}, {:noreply, put_flash(assign(socket, :items, exercises), :info, "complete 1 set for #{exercise.name}")})
 
        {:error, error} -> IO.inspect(error, label: :error)
       end
@@ -106,4 +105,16 @@ defmodule TrainingJournalWeb.ExerciseLive do
   end
 
   def get_exercises(socket), do: socket.assigns.items
+
+  def completed(exercises, circuit, return_tuple_a, return_tuple_b) do
+    completed_exercises = Enum.filter(exercises, &(&1.completed_sets == circuit.sets)) |> Enum.count()
+
+    if completed_exercises == circuit.number_of_exercises do
+      Circuits.update_circuit(circuit, %{completed: true})
+      return_tuple_a
+    else
+      return_tuple_b
+    end
+  end
+
 end
