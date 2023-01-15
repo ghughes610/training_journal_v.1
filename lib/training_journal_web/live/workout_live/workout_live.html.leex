@@ -1,3 +1,23 @@
+<div class="">
+  <h1 class="text-white font-bold">All Workouts</h1>
+  <div class="m-5 p-5">
+  <%= if Enum.count(@items) == 0  do %>
+    <div class="test-white">Insert A Workout</div>
+  <% else %>
+  <div class="flex flex-col items-end">
+     <%= for _workout <- @items do %>
+        <%= TrainingJournalWeb.ComponentsLive.ComponentsLive.workout_card(assigns) %>
+      <% end %>
+    <% end %>
+    </div>
+  </div>
+
+        <a href="#" class="text-base font-medium text-white hover:text-indigo-50">Pricing</a>
+
+  </div>
+</div>
+
+
 
 <div class="bg-gray-50">
   <header class="bg-indigo-600">

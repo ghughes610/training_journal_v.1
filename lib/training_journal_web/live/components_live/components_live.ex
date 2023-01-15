@@ -7,6 +7,19 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
     """
   end
 
+  def section_header(assigns) do
+    ~H"""
+    <div class="bg-indigo-500">
+      <div class="mx-auto max-w-7xl py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
+        <div class="text-center">
+          <p class="mt-1 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">Take control of your team.</p>
+          <p class="mx-auto mt-5 max-w-xl text-xl text-gray-500">Start building for free, then add a site plan to go live. Account plans unlock additional features.</p>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
   def make_slider(name, min \\ 0, max \\ 10) do
     assigns = %{
       min: min,
@@ -49,11 +62,20 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
     }
     if display_name == nil do
       ~L"""
-      <input type="text" placeholder="<%= String.capitalize(@field) %>" name="<%= @field %>" class="m-3 p-2 text-center border border-green-500"/>
+      <div>
+        <div class="relative my-1.5 rounded-md shadow-sm">
+          <input type="text" placeholder="<%= String.capitalize(@field) %>" name="<%= @field %>" class="p-3 block w-full rounded-md border-gray-300 pr-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+        </div>
+      </div>
       """
     else
       ~L"""
-      <input type="text" placeholder="<%= @display_name %>" name="<%= @field %>" class="m-3 p-2 text-center border border-green-500"/>
+      <div>
+        <div class="relative my-1.5 rounded-md shadow-sm">
+          <input type="text" placeholder="<%= @display_name %>" name="<%= @field %>" class="p-3 block w-full rounded-md border-gray-300 pr-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+        </div>
+      </div>
+
       """
     end
   end
@@ -138,7 +160,7 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
     ~H"""
       <%= for i <- @items do %>
         <li class="col-span-1 flex rounded-md shadow-sm">
-          <div class="flex-shrink-0 flex items-center justify-center w-16 bg-pink-600 text-white text-sm font-medium rounded-l-md"><%= i.metadata["completed_sets"] %></div>
+          <div class="flex-shrink-0 flex items-center justify-center w-16 bg-pink-600 text-white text-sm font-medium rounded-l-md"><%= i.number_of_exercises %></div>
           <div class="flex flex-1 items-center justify-between truncate rounded-r-md border-t border-r border-b border-gray-200 bg-white">
             <div class="flex-1 truncate px-4 py-2 text-sm">
               <a class="font-medium text-gray-900 hover:text-gray-600">
@@ -223,6 +245,7 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
               ) %>
               </a>
               <p class="text-gray-500"><%= Timex.format!(i.inserted_at, "{M}/{D}/{YYYY}") %></p>
+              <p class="text-gray-500"><%= i.completed_sets %></p>
             </div>
             <div class="flex-shrink-0 pr-2">
               <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white bg-transparent text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
@@ -282,6 +305,20 @@ defmodule TrainingJournalWeb.ComponentsLive.ComponentsLive do
      else
       emoji_2
     end
+  end
+
+  def make_back_button(assigns) do
+    ~H"""
+    <span class="mt-2 ml-1 isolate inline-flex rounded-md shadow-sm">
+          <button type="button" class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                  <!-- Heroicon name: mini/bookmark -->
+                  <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" />
+                  </svg>
+                  <a  class="mx-2" href="/workout/circuit?id={ @circuit.workout_id }">Back</a>
+          </button>
+      </span>
+    """
   end
 
 end

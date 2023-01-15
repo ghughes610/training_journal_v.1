@@ -2,7 +2,6 @@ defmodule TrainingJournalWeb.CircuitLive do
   use TrainingJournalWeb, :live_view
 
   alias TrainingJournal.{
-    Builders.NameBuilder,
     Circuits,
     Workouts
   }

@@ -1,5 +1,35 @@
-need to make a completed button on circuits so we know when they are completed
-    add completed_sets key to metadata so we can use it to compare with sets column √
-    need to make it so you can only make the number of exercises the circuit form says
+make whiteboard type UI
+    use grid to make it 
+    make endpoint that will be a workout 
+    load everything to do with a workout 
+        TRY THIS WITH RELATIONSHIPS 
 
-need to make a button to come back to circuit from exercises
+
+        this is what the whiteboard should look like 
+
+
+    name            |  load        | reps        | sets 
+  --------------------------------------------------------
+    circuit_1       |              |             |  
+        exercise_1  |   10 lbs     |    10       | 3
+        exercise_2  |   ISO        | 10 seconds  | 3
+        exercise_3  |   red band   |   15        | 3
+
+    circuit_2       |              |             |  
+            exercise_1  |   10 lbs     |    10       | 3
+            exercise_2  |   ISO        | 10 seconds  | 3
+            exercise_3  |   red band   |   15        | 3
+
+    circuit_3       |              |             |  
+            exercise_1  |   10 lbs     |    10       | 3
+            exercise_2  |   ISO        | 10 seconds  | 3
+            exercise_3  |   red band   |   15        | 3
+
+
+
+
+
+
+if all of the exercises sets are complete then update the circuits compled field to true
+    look at all the exercises on mount of the exercise component √
+    check exerscies after each complete set

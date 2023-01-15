@@ -14,13 +14,14 @@ defmodule TrainingJournal.Exercises.Exercise do
     field :isometric, :boolean, default: false
     field :over_head, :boolean, default: true
     field :fingers, :boolean, default: false
+    field :completed_sets, :integer, default: 0
 
     timestamps()
   end
 
   def changeset(exercise, attrs) do
     exercise
-    |> cast(attrs, [:name, :reps, :weight, :metadata, :circuit_id, :push, :pull, :dynamic, :isometric, :over_head, :fingers])
+    |> cast(attrs, [:name, :reps, :weight, :metadata, :circuit_id, :push, :pull, :dynamic, :isometric, :over_head, :fingers, :completed_sets])
     |> validate_required([:name, :reps, :weight, :metadata, :circuit_id, :push, :pull, :dynamic, :isometric, :over_head, :fingers])
   end
 end
