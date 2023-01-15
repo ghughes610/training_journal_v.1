@@ -5,10 +5,7 @@ defmodule TrainingJournalWeb.WhiteboardLive do
 
     def mount(%{"id" => id}, _session, socket) do
     full_workout = Workouts.get_full_workout(String.to_integer(id))
-
-    IO.inspect(full_workout)
-    socket = assign(socket, items: full_workout.circuit, id: id, module: TrainingJournalWeb.ExerciseLive)
-
+    socket = assign(socket, items: full_workout)
     {:ok, socket}
   end
 end
