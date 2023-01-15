@@ -1,7 +1,34 @@
 make whiteboard type UI
     use grid to make it 
-    put each type of card into each column 
-    click button on card to complete set 
+    make endpoint that will be a workout 
+    load everything to do with a workout 
+        TRY THIS WITH RELATIONSHIPS 
+
+
+        this is what the whiteboard should look like 
+
+
+    name            |  load        | reps        | sets 
+  --------------------------------------------------------
+    circuit_1       |              |             |  
+        exercise_1  |   10 lbs     |    10       | 3
+        exercise_2  |   ISO        | 10 seconds  | 3
+        exercise_3  |   red band   |   15        | 3
+
+    circuit_2       |              |             |  
+            exercise_1  |   10 lbs     |    10       | 3
+            exercise_2  |   ISO        | 10 seconds  | 3
+            exercise_3  |   red band   |   15        | 3
+
+    circuit_3       |              |             |  
+            exercise_1  |   10 lbs     |    10       | 3
+            exercise_2  |   ISO        | 10 seconds  | 3
+            exercise_3  |   red band   |   15        | 3
+
+
+
+
+
 
 if all of the exercises sets are complete then update the circuits compled field to true
     look at all the exercises on mount of the exercise component √
