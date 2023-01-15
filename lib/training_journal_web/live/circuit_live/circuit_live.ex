@@ -9,7 +9,6 @@ defmodule TrainingJournalWeb.CircuitLive do
   def mount(%{"id" => id}, _session, socket) do
     full_workout = Workouts.get_full_workout(String.to_integer(id))
     socket = assign(socket, items: full_workout.circuit, id: id, module: TrainingJournalWeb.ExerciseLive)
-
     {:ok, socket}
   end
 
@@ -33,7 +32,6 @@ defmodule TrainingJournalWeb.CircuitLive do
        {:error, error} -> IO.puts("not updating here is the error #{error}")
     end
 
-    IO.inspect(result, label: "result")
     {:noreply, socket}
   end
 
