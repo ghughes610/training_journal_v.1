@@ -3,7 +3,9 @@ defmodule TrainingJournalWeb.CircuitLive do
 
   alias TrainingJournal.{
     Circuits,
-    Workouts
+    Exercises,
+    Workouts,
+    Repo
   }
 
   def mount(%{"id" => id}, _session, socket) do
@@ -23,11 +25,13 @@ defmodule TrainingJournalWeb.CircuitLive do
     end
   end
 
-  def handle_event("complete_set", %{"value" => id}, socket) do
-    # dont think i should be making another call to the database just filtering the full_workout.circuits for the id should be good but i cannot seem to get the circuit id to be included in the preload
-    circuit = Circuits.get_circuit!(String.to_integer(id))
-    attrs = %{ "metadata" => %{"completed_sets" => circuit.metadata["completed_sets"] + 1}}
-    result = case Circuits.update_circuit(circuit, attrs) do
+  def handle_event("complete_circuit", _, socket) do
+    circuit = socket
+    IO.inspect(socket.assigns.items, label: "lib/training_journal_web/live/circuit_live/circuit_live.ex:29")
+
+    Enum.map(socket.assigns.items, &(complete_all_sets(&1, circuit)))
+
+    case Circuits.update_circuit(circuit, %{ "completed" => true }) do
        {:ok, circuits} -> IO.inspect(circuits)
        {:error, error} -> IO.puts("not updating here is the error #{error}")
     end
@@ -56,8 +60,15 @@ defmodule TrainingJournalWeb.CircuitLive do
     end
   end
 
-  def get_circuits(socket) do
-    socket.assigns.items
+  def get_circuits(socket), do: socket.assigns.items
+
+  def complete_all_sets(exercise, circuit) do
+    IO.inspect(exercise, label: :exercise)
+    IO.inspect(circuit, label: :circuit)
+    case Exercises.update_exercise(exercise, %{ "completed_sets" => circuit.sets }) do
+    {:ok, exercise} -> IO.inspect(exercise)
+       {:error, error} -> IO.puts("not updating here is the error #{error}")
+    end
   end
 
 end
