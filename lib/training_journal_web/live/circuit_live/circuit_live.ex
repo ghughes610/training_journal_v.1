@@ -26,10 +26,8 @@ defmodule TrainingJournalWeb.CircuitLive do
   end
 
   def handle_event("complete_circuit", _, socket) do
-    circuit = socket
-    IO.inspect(socket.assigns.items, label: "lib/training_journal_web/live/circuit_live/circuit_live.ex:29")
-
-    Enum.map(socket.assigns.items, &(complete_all_sets(&1, circuit)))
+    circuit = List.first(socket.assigns.items)
+    Enum.map(socket.assigns.items, &(complete_all_sets(&1)))
 
     case Circuits.update_circuit(circuit, %{ "completed" => true }) do
        {:ok, circuits} -> IO.inspect(circuits)
@@ -62,13 +60,6 @@ defmodule TrainingJournalWeb.CircuitLive do
 
   def get_circuits(socket), do: socket.assigns.items
 
-  def complete_all_sets(exercise, circuit) do
-    IO.inspect(exercise, label: :exercise)
-    IO.inspect(circuit, label: :circuit)
-    case Exercises.update_exercise(exercise, %{ "completed_sets" => circuit.sets }) do
-    {:ok, exercise} -> IO.inspect(exercise)
-       {:error, error} -> IO.puts("not updating here is the error #{error}")
-    end
-  end
+  def complete_all_sets(circuit), do: Enum.map(circuit.exercise, &(Exercises.update_exercise(&1, %{ "completed_sets" => circuit.sets })))
 
 end
