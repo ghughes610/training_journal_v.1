@@ -4,8 +4,7 @@ defmodule TrainingJournalWeb.CircuitLive do
   alias TrainingJournal.{
     Circuits,
     Exercises,
-    Workouts,
-    Repo
+    Workouts
   }
 
   def mount(%{"id" => id}, _session, socket) do
@@ -60,6 +59,6 @@ defmodule TrainingJournalWeb.CircuitLive do
 
   def get_circuits(socket), do: socket.assigns.items
 
-  def complete_all_sets(circuit), do: Enum.map(circuit.exercise, &(Exercises.update_exercise(&1, %{ "completed_sets" => circuit.sets })))
+  def complete_all_sets(circuit), do: Enum.map(circuit.exercise, &(Exercises.update_exercise(&1, %{"completed_sets" => circuit.sets})))
 
 end

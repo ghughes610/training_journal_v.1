@@ -19,10 +19,28 @@ defmodule TrainingJournalWeb.WorkoutLive do
   end
 
   @impl true
-  def handle_event("update_editing", %{"id" => id}, socket) do
-    editing = Workouts.get_workout!(id)
+  def handle_event("delete", %{"id" => id}, socket) do
+    workout = Workouts.get_workout!(id)
 
-    {:noreply, assign(socket, :editing, editing)}
+    workouts = with {:ok, deleted_workout} <- Workouts.delete_workout(workout) do
+      Enum.filter(TrainingJournalWeb.CreateWorkoutLive.get_workouts(socket), fn workout -> workout.id != deleted_workout.id end)
+    end
+
+    {:noreply, assign(socket, :items, workouts)}
+  end
+
+  @impl true
+  def handle_params(a, b, socket) do
+    IO.inspect(a, label: :a)
+    IO.inspect(b, label: :b)
+    
+     {:noreply, socket}
+  end
+
+  def handle_event("filter", params, socket) do
+    IO.inspect(params, label: :params)
+
+    {:noreply, socket}
   end
 
 
